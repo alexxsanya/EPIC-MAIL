@@ -64,12 +64,13 @@ body{
 }
 
 .form-holder-action{
-    text-align: right;
     width:100%;
     color:#eee;
     font-size: 0.9rem;
 }
-
+a.form-holder-action{
+    text-decoration: none;
+}
 button.form-holder-item{
     margin-top:35px;
     border-radius: 5px;
@@ -81,4 +82,19 @@ button.form-holder-item{
     color: #ffffff;
     background: #3379f5;
     cursor: pointer;
+}
+
+.text-center{
+    text-align: center;
+}
+.text-left{
+    text-align: left;
+}
+
+.text-right{
+    text-align: right;
+}
+
+.step-down{
+    margin-top: 30px;
 }
