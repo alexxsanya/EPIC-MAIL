@@ -99,10 +99,74 @@ body{
 }
 .mainbar{
     display: flex;
-    justify-content: space-around;
-    flex-direction: column; 
-    width:76%;  
-    height:100%;
+    flex-direction: row; 
+    width:74%;  
+    height:93%;
     background: rgba(241, 235, 235, 0.11);
+    padding:20px 20px;
+    overflow-y: auto;
     border-radius: 15px;
 }
+.mainbar #main-body{
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    overflow-y: auto;
+}
+.mainbar #main-body::-webkit-scrollbar {
+    width: 10px;
+    border-radius: 10px;
+    background: linear-gradient(left, #96A6BF, #63738C);
+    box-shadow: inset 0 0 1px 1px #5C6670;
+} 
+.mainbar #main-body::-webkit-scrollbar-thumb {
+    width: 6px;
+    border-radius: 5px;
+    background: #eee;
+    box-shadow: 0 0 1px 1px #bbb, inset 0 0 7px rgba(0,0,0,0.3)
+} 
+table {
+    font-family: arial, sans-serif;
+    border-collapse: collapse;
+    width: 100%;
+    font-size: 0.90em;
+  }
+  tr{
+    background:rgba(99, 99, 103, 0.5215);
+    border-bottom: 1px solid #444;
+  }
+  tr:hover{
+    background:rgba(99, 99, 103, 0.9215);
+    cursor: pointer;
+  }
+  td, th {
+    text-align: left;
+    padding: 8px;
+  }
+  td.td-action{
+    color:#3379f5;
+  }
+  td.msg-body{
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+  }
+  caption{
+    min-width:200px;
+    text-align: left;
+    float: left;
+    padding:10px 0;
+    text-transform: capitalize;
+    color:#fff;
+  }
+
+  error{
+    color: #fff;
+    padding: 5px 10px;
+    background: red;
+    border-radius: 15px;
+    text-align: center;
+    font-size: 0.9em;
+    width:60%;
+    margin:auto;
+  }
