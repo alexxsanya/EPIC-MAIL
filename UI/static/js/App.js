@@ -71,7 +71,33 @@ loadMessage = function(caption){
       }
 }
 
+resetPassword = function(){
+    var reset_btn = document.getElementById('reset-pass')
+    var reset_value = document.getElementById('recover-to')
+
+    reset_btn.setAttribute("disabled","disabled")
+
+    reset_btn.addEventListener('click',function(){
+        console.log(reset_value.value)
+        reset_value.value = ""
+        alert("Check Your Email or Phone SMS for Reset Link")
+
+        document.getElementById('reset-pass-modal').style.display='none'
+
+    })
+
+    reset_value.addEventListener('keyup',function(){
+        if(reset_value.value.length>12){
+            console.log("You can now request for a request")
+            reset_btn.removeAttribute("disabled")
+        }
+    })
+}
 App = function(){
     console.log('EPIC-MAIL system loaded')
     setCurrentTime();
+}
+
+LoginApp = function(){
+    resetPassword()
 }
