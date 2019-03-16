@@ -32,22 +32,22 @@
                     onclick="loadLocalHTML('compose.html')"> 
                         Compose Message 
                 </div>
-                <div class="menu-item" onclick="loadLocalHTML('inbox.html')">
+                <div class="menu-item" onclick="loadMessage('inbox')">
                     Inbox (2)
                 </div>
-                <div class="menu-item" onclick="loadLocalHTML('outbox.html')">
-                    Outbox (6)
+                <div class="menu-item" onclick="loadMessage('outbox')">
+                    Outbox (25)
                 </div>
-                <div class="menu-item" onclick="loadLocalHTML('sent.html')">
+                <div class="menu-item" onclick="loadMessage('sent')">
                     Sent
                 </div>
-                <div class="menu-item" onclick="loadLocalHTML('draft.html')">
+                <div class="menu-item" onclick="loadMessage('draft')">
                     Draft
                 </div>
-                <div class="menu-item" onclick="loadLocalHTML('trash.html')">
+                <div class="menu-item" onclick="loadMessage('trash')">
                     Trash
                 </div>
-                <div class="menu-item" onclick="loadLocalHTML('spam.html')">
+                <div class="menu-item" onclick="loadMessage('spam')">
                     Spam (200)
                 </div>
                 <div class="menu-item" onclick="loadLocalHTML('groups.html')">
@@ -67,7 +67,7 @@
 
     <script type="text/javascript">
         window.onload = function(){
-            loadLocalHTML('inbox.html');
+            loadMessage('inbox')
             App()
         }
     </script>
