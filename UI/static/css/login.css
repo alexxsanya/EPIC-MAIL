@@ -98,3 +98,62 @@ button.form-holder-item{
 .step-down{
     margin-top: 30px;
 }
+
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    left: 50%;
+    top: 70%;
+    width: 35%;
+    height: 20%;
+    overflow: hidden;
+    background-color: rgba(0,0,0, 0.9);
+    padding-top: 30px;
+    border-bottom-left-radius: 25%;
+} 
+.modal-content {
+    display: flex;
+    flex-direction: column;
+    padding:10px 20px;
+}
+.modal-title {
+    color:#fff;
+    width:100%;
+    font-size: 15px;
+}
+.close {
+    position: absolute;
+    right: 20px;
+    top: 5px;
+    font-size: 30px;
+    font-weight: bold;
+    color: #f1f1f1;
+}
+
+.close:hover,
+.close:focus {
+    color: #f44336;
+    cursor: pointer;
+}
+
+.recover-button{
+    width: 15%;
+    margin: 0;
+    border-radius: 0px;
+    border-top-right-radius: 10px;
+    border-bottom-right-radius: 10px;
+    padding: 6px 0;
+    border-width: 0px;
+    border-style: outset;
+    border-image: initial;
+    font-size: 1.2rem;
+    color: #ffffff;
+    background: #3379f5;
+    cursor: pointer;
+}
+
+#recover-to{
+    text-transform: lowercase;
+    font-size: 16px;
+}
