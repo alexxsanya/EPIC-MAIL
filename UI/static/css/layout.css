@@ -294,3 +294,113 @@ from{
     background-color: #3379f5;
     cursor: pointer;
 }
+
+.form-holder{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 5.7vh;
+    flex-direction: row;
+    margin:15px 0;
+}
+
+.form-holder-label{
+    flex-grow: 1;
+    background-color: #3379f5;
+    height: 5vh;
+    text-align: center;
+    line-height: 4.9vh;
+    border-top-left-radius: 5px;
+    border-bottom-left-radius: 5px;
+    padding: 2px;
+    font-size: 0.9rem;
+    color:#fff;
+}
+
+.form-holder-item{
+    flex-grow: 8;
+    padding:3px 4px;
+    line-height: 4vh;
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px;
+}
+select.form-holder-item{
+    height: 40px;
+    font-size: 15px;
+}
+.form-holder-action{
+    width:100%;
+    color:#eee;
+    font-size: 0.9rem;
+}
+a.form-holder-action{
+    text-decoration: none;
+}
+button.form-holder-item{
+    margin-top:35px;
+    border-radius: 5px;
+    width:80%;
+    border-width: 0px;
+    border-style: outset;
+    border-image: initial;
+    font-size: 1.2rem;
+    color: #ffffff;
+    background: #3379f5;
+    cursor: pointer;
+}
+
+.groups-container{
+    display: flex;
+    flex-direction: row;
+}
+
+.groups-container .groups-view{
+    flex-grow: 3;
+}
+
+.groups-container .groups-section{
+    flex-grow: 2;
+}
+
+.groups-container .groups-section .action{
+    display: flex;
+    flex-direction: row;
+    padding: 5px 20px;
+    justify-content: center;
+}
+.groups-container .groups-section .action .item{
+    color:#444;
+    margin:0px 20px;
+    padding:4px 10px;
+    background-color: #bbb;
+    border-radius: 5px;
+}
+
+.groups-container .groups-section .action .item:hover{
+    color:#444;
+    background-color: #eee;
+    cursor: pointer;
+}
+
+.groups-container .groups-section .groups-forms{
+    min-height: 10vh;
+    display: flex;
+    justify-content: center;
+}
+.groups-container .groups-section .groups-forms #create-group-container{
+    display: none;
+    flex-direction: column;
+    padding: 10px 20px;
+    align-self: center;
+    border: 1px solid #eee;
+    width: 80%;
+}
+
+.groups-container .groups-section .groups-forms #add-member-container{
+    display: none;
+    flex-direction: column;
+    padding: 10px 20px;
+    align-self: center;
+    border: 1px solid #eee;
+    width: 80%;
+}

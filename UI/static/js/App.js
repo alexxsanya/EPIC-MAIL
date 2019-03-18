@@ -5,7 +5,6 @@ loadLocalHTML = function (uri){
     if(xmlhttp.status == 200 && xmlhttp.readyState == 4){
         htmlCode = xmlhttp.responseText;
         document.getElementById('main-body').innerHTML = htmlCode;
-        console.log(htmlCode);
         }
     };
     uri = "./components/"+uri;
@@ -96,6 +95,21 @@ resetPassword = function(){
         }
     })
 }
+
+addGroup = function(){ 
+    var add_group = document.getElementById('create-group-container')
+    var add_member =  document.getElementById('add-member-container')
+    add_group.setAttribute('style','display:flex');
+    add_member.setAttribute('style','display:none')
+}
+
+addMembertoGroup = function(){ 
+    var add_group = document.getElementById('create-group-container')
+    var add_member =  document.getElementById('add-member-container')  
+    add_member.setAttribute('style','display:flex');
+    add_group.setAttribute('style','display:none')
+}
+
 App = function(){
     console.log('EPIC-MAIL system loaded')
     setCurrentTime();
