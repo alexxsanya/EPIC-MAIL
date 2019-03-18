@@ -41,7 +41,7 @@ loadMessage = function(caption){
         }else{
             data += "<caption>"+caption+" Messages</caption>";
             msgJson.forEach(msg => {
-                data += "<tr>"+
+                data += "<tr onclick='readMessage("+msg.id+")'>"+
                             "<td>"+msg.subj+"</td>"+
                             "<td class='msg-body'>"+msg.body+"</td>"+
                             "<td>"+ msg.date_time+
@@ -71,6 +71,9 @@ loadMessage = function(caption){
       }
 }
 
+readMessage = function(msg_id){
+    loadLocalHTML('message.html')
+}
 resetPassword = function(){
     var reset_btn = document.getElementById('reset-pass')
     var reset_value = document.getElementById('recover-to')
