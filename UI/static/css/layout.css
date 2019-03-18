@@ -170,3 +170,127 @@ table {
     width:60%;
     margin:auto;
   }
+
+  .msg-container{
+    display: flex;
+    flex-direction: column;
+    align-items: normal;
+    margin:10px 5px;
+    font-size: 1.2rem;
+  }
+
+.msg-bar{
+    display: flex;
+    flex-flow: row;
+    margin:5px 0;
+  }
+
+.back-btn{
+    justify-content: flex-start;
+    text-align: left;
+    flex-grow: 1;
+  }
+
+.back-btn button {
+    min-width: 15%;
+    margin: 0;
+    border-radius: 0px;
+    border-radius: 10px;
+    padding: 4px 6px;
+    border-width: 0px;
+    border-style: outset;
+    border-image: initial;
+    font-size: 1.2rem;
+    color: #ffffff;
+    background-color: rgba(99, 99, 103, 0.5215);
+    cursor: pointer;
+  }
+
+.msg-actions{
+    display: flex;
+    justify-content: flex-center;
+    flex-grow: 2;
+    flex-direction: row;
+    align-content: space-between;
+  }
+
+.msg-actions .item{
+    flex-grow: 0;
+    margin: 0 5px;
+    color: #ddd;
+    font-size: 1.0rem;
+    cursor: pointer;
+    background: #3379f5;
+    line-height: 2.1rem;
+    padding: 0 5px;
+    border-radius: 5px;
+  }
+
+.msg-actions .item:hover{
+    color: #fff;
+}
+
+.msg-display{
+    display: flex;
+    flex-direction: column;
+}
+
+.msg-display .msg-title{
+    display: flex;
+    flex-direction: row;
+    padding:15px 15px;
+    margin-top:10px;
+    background-color: rgba(99, 99, 103, 0.5215);
+    color:#111;
+}
+
+.msg-display .msg-title .subject, 
+.msg-display .msg-title .sender, 
+.msg-display .msg-title .timedate{
+    flex-grow: 1; 
+}
+
+from{
+    padding: 2px 5px;
+    background-color: rgba(245, 149, 51, 0.56);
+    border-radius: 5px;
+    color: #ddd;
+    font-size:14px;
+}
+
+.msg-display .msg-body{
+    display: flex;
+    flex-direction: column;
+    background-color: #fff;
+    padding:25px 15px;
+    min-height: 40vh;
+}
+
+.msg-reply-form{
+    display: flex;
+    flex-direction: row;
+    background-color: #ccc;
+    padding:2px 15px;    
+}
+
+.msg-reply-form .reply-msg-txtarea{
+    width:60%;
+    height:8vh;
+    margin: 10px;
+    padding:10px 20px;
+    font-size:20px;
+}
+
+.msg-reply-form .reply-msg-btn{
+    width: 15%;
+    height: 30px;
+    margin: 10px;
+    padding: 4px 6px;
+    border-width: 0px;
+    border-style: outset;
+    border-image: initial;
+    font-size: 1.2rem;
+    color: #ffffff;
+    background-color: #3379f5;
+    cursor: pointer;
+}
