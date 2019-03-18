@@ -110,6 +110,10 @@ addMembertoGroup = function(){
     add_group.setAttribute('style','display:none')
 }
 
+addContact = function(){
+    var add_member =  document.getElementById('create-contact-container')  
+    add_member.setAttribute('style','display:flex'); 
+}
 App = function(){
     console.log('EPIC-MAIL system loaded')
     setCurrentTime();
