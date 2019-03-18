@@ -32,6 +32,9 @@ body{
 .login-form{
     padding:80px 80px;
 }
+.signup-form{
+    padding:80px 40px;
+}
 
 .form-holder{
     display: flex;
@@ -60,6 +63,7 @@ body{
     padding:3px 4px;
     line-height: 4vh;
     border-top-right-radius: 5px;
+    font-size:15px;
     border-bottom-right-radius: 5px;
 }
 
