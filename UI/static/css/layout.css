@@ -404,3 +404,11 @@ button.form-holder-item{
     border: 1px solid #eee;
     width: 80%;
 }
+.groups-container .groups-section .groups-forms #create-contact-container{
+    display: none;
+    flex-direction: column;
+    padding:10px 30px;
+    align-self: center;
+    border: 1px solid #eee;
+    width: 60%;
+}
