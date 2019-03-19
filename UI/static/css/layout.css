@@ -280,7 +280,9 @@ from{
     height:8vh;
     margin: 10px;
     padding:10px 20px;
-    font-size:20px;
+    font-size:18px;
+    color:#444;
+    font-family: Raleway, Open Sans, Droid Sans, Roboto,arial, sans-serif;
 }
 
 .msg-reply-form .reply-msg-btn{
@@ -320,11 +322,12 @@ from{
 }
 
 .form-holder-item{
-    flex-grow: 8;
-    padding:3px 4px;
+    flex-grow: 1;
+    padding:3px 10px;
     line-height: 4vh;
-    border-top-right-radius: 5px;
-    border-bottom-right-radius: 5px;
+    border-radius: 10px;
+    color: #444;
+    font-size: 16px;
 }
 select.form-holder-item{
     height: 40px;
@@ -469,4 +472,6 @@ button.form-holder-item{
     border-radius: 15px;
     align-self: center;
     font-size:16px;
+    color:#444;
+    font-family: Raleway, Open Sans, Droid Sans, Roboto,arial, sans-serif;
 }
