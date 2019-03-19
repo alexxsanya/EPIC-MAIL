@@ -51,10 +51,10 @@ body{
 }
 .header .nav .nav-item a.logout{
     text-decoration: none;
-    color: #3379f5;
-    background: #ddd;
-    padding:0 10px;
+    color: #444;
+    padding: 0 10px;
     border-radius: 15px;
+    font-size: 20px;
 }
 .container{
     width: 100%;   
