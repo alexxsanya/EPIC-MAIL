@@ -32,8 +32,8 @@ loadMessage = function(caption){
                             "<td class='msg-body'>"+msg.body+"</td>"+
                             "<td>"+ msg.date_time+
                             "</td>"+
-                            "<td class='td-action'>[ del ]</td>"+
-                            "<td class='td-action'>[ x ]</td>"+
+                            "<td class='td-action'></td>"+
+                            "<td class='td-action'></td>"+
                         "</tr>";           
                 });    
         }
