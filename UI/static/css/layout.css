@@ -412,3 +412,59 @@ button.form-holder-item{
     border: 1px solid #eee;
     width: 60%;
 }
+
+
+.compose-message-container{
+    display: flex;
+    flex-direction: column;
+    padding:10px 10px;
+}
+
+.compose-message-container .message-bar{
+    display: flex;
+    flex-direction: row;
+    padding: 5px 15px;
+    margin-top: 10px;
+    background-color: rgba(99, 99, 103, 0.5215);
+    color: #111;
+}
+
+.compose-message-container .message-bar .title{
+    justify-content: flex-start;
+    text-align: left;
+    flex-grow: 1;
+    line-height: 2.1;
+}
+
+.compose-message-container .message-bar .actions{
+    display: flex;
+    justify-content: flex-end;
+    flex-grow: 2;
+    flex-direction: row;
+    align-content: space-between;
+  }
+
+.compose-message-container .message-bar .actions .item{
+    flex-grow: 0;
+    margin: 0 5px;
+    color: #ddd;
+    font-size: 1.0rem;
+    cursor: pointer;
+    background: #3379f5;
+    line-height: 2.1rem;
+    padding: 0 5px;
+    border-radius: 5px;
+  }
+
+.compose-message-container .message-bar .actions .item:hover{
+    color: #fff;
+}
+
+.compose-message-container .msg-body textarea{
+    min-height: 40vh;
+    width:94.8%;
+    padding:10px 20px;
+    border-radius: 15px;
+    align-self: center;
+    font-size:16px;
+}
