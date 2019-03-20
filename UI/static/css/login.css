@@ -1,5 +1,5 @@
 body{
-    background-image:url('../images/bg-login.jpg');
+    background-color:#3379f5;
 	background-repeat:no-repeat;
 	background-size: cover;
 	background-attachment: fixed;
@@ -23,7 +23,7 @@ body{
 }
 
 .box{  
-    background:rgba(0, 0, 0, 0.51);
+    background-color: rgba(241, 235, 235, 0.69);
     width: 400px;
     min-height: 300px;
     border-radius:10px;
@@ -31,6 +31,9 @@ body{
 
 .login-form{
     padding:80px 80px;
+}
+.signup-form{
+    padding:50px 70px;
 }
 
 .form-holder{
@@ -60,6 +63,7 @@ body{
     padding:3px 4px;
     line-height: 4vh;
     border-top-right-radius: 5px;
+    font-size:15px;
     border-bottom-right-radius: 5px;
 }
 
@@ -97,4 +101,80 @@ button.form-holder-item{
 
 .step-down{
     margin-top: 30px;
+    display: flex;
+    flex-direction:column;
+}
+
+.step-down a{
+    margin: 10px 0;
+}
+.step-down a.no__account,
+.step-down a.login{
+    margin: 10px;
+    margin-top: 20px;
+    color: #444;
+}
+
+.step-down a.forgot_password{
+    margin: 10px;
+    margin-top: 20px;
+    color: #3379f5;
+}
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    left: 50%;
+    top: 70%;
+    width: 35%;
+    height: 20%;
+    overflow: hidden;
+    background-color: rgba(0,0,0, 0.9);
+    padding-top: 30px;
+    border-bottom-left-radius: 25%;
+} 
+.modal-content {
+    display: flex;
+    flex-direction: column;
+    padding:10px 20px;
+}
+.modal-title {
+    color:#fff;
+    width:100%;
+    font-size: 15px;
+}
+.close {
+    position: absolute;
+    right: 20px;
+    top: 5px;
+    font-size: 30px;
+    font-weight: bold;
+    color: #f1f1f1;
+}
+
+.close:hover,
+.close:focus {
+    color: #f44336;
+    cursor: pointer;
+}
+
+.recover-button{
+    width: 15%;
+    margin: 0;
+    border-radius: 0px;
+    border-top-right-radius: 10px;
+    border-bottom-right-radius: 10px;
+    padding: 6px 0;
+    border-width: 0px;
+    border-style: outset;
+    border-image: initial;
+    font-size: 1.2rem;
+    color: #ffffff;
+    background: #3379f5;
+    cursor: pointer;
+}
+
+#recover-to{
+    text-transform: lowercase;
+    font-size: 16px;
 }

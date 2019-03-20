@@ -5,26 +5,12 @@ loadLocalHTML = function (uri){
     if(xmlhttp.status == 200 && xmlhttp.readyState == 4){
         htmlCode = xmlhttp.responseText;
         document.getElementById('main-body').innerHTML = htmlCode;
-        console.log(htmlCode);
         }
     };
     uri = "./components/"+uri;
     xmlhttp.open("GET",uri,true);
     xmlhttp.send();
 }
-
-setLiveTime = function(){
-    var refresh=1000; 
-    mytime=setTimeout('setCurrentTime()',refresh)
-}
-setCurrentTime = function () {
-    var today = new Date();
-    var date = today.getDate()+'-'+ (today.getMonth()+1)+'-'+today.getFullYear();
-    var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
-    var dateTime = date+' '+time;
-    setLiveTime()
-    document.getElementById('time-date').innerHTML = dateTime;
-};
 
 loadMessage = function(caption){
 
@@ -41,13 +27,13 @@ loadMessage = function(caption){
         }else{
             data += "<caption>"+caption+" Messages</caption>";
             msgJson.forEach(msg => {
-                data += "<tr>"+
+                data += "<tr onclick='readMessage("+msg.id+")'>"+
                             "<td>"+msg.subj+"</td>"+
                             "<td class='msg-body'>"+msg.body+"</td>"+
                             "<td>"+ msg.date_time+
                             "</td>"+
-                            "<td class='td-action'>[ del ]</td>"+
-                            "<td class='td-action'>[ x ]</td>"+
+                            "<td class='td-action'></td>"+
+                            "<td class='td-action'></td>"+
                         "</tr>";           
                 });    
         }
@@ -71,7 +57,55 @@ loadMessage = function(caption){
       }
 }
 
+readMessage = function(msg_id){
+    loadLocalHTML('message.html')
+}
+resetPassword = function(){
+    var reset_btn = document.getElementById('reset-pass')
+    var reset_value = document.getElementById('recover-to')
+
+    reset_btn.setAttribute("disabled","disabled")
+
+    reset_btn.addEventListener('click',function(){
+        console.log(reset_value.value)
+        reset_value.value = ""
+        alert("Check Your Email or Phone SMS for Reset Link")
+
+        document.getElementById('reset-pass-modal').style.display='none'
+
+    })
+
+    reset_value.addEventListener('keyup',function(){
+        if(reset_value.value.length>12){
+            console.log("You can now request for a request")
+            reset_btn.removeAttribute("disabled")
+        }
+    })
+}
+
+addGroup = function(){ 
+    var add_group = document.getElementById('create-group-container')
+    var add_member =  document.getElementById('add-member-container')
+    add_group.setAttribute('style','display:flex');
+    add_member.setAttribute('style','display:none')
+}
+
+addMembertoGroup = function(){ 
+    var add_group = document.getElementById('create-group-container')
+    var add_member =  document.getElementById('add-member-container')  
+    add_member.setAttribute('style','display:flex');
+    add_group.setAttribute('style','display:none')
+}
+
+addContact = function(){
+    var add_member =  document.getElementById('create-contact-container')  
+    add_member.setAttribute('style','display:flex'); 
+}
 App = function(){
     console.log('EPIC-MAIL system loaded')
     setCurrentTime();
+}
+
+LoginApp = function(){
+    resetPassword()
 }
