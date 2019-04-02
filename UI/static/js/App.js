@@ -19,39 +19,37 @@ loadMessage = function(caption){
 
     document.getElementById('main-body').innerHTML = "Loading...";
 
-    var xmlhttp = new XMLHttpRequest();
-    xmlhttp.onreadystatechange = function(){
-    if(xmlhttp.status == 200 && xmlhttp.readyState == 4){
-        var msgJson = xmlhttp.responseText;
-        msgJson = JSON.parse(msgJson);
-        var data = "<table>";
-        if(isEmpty(msgJson)){
-            data += "<caption> Currently No "+caption+" Messages</caption>";
+    fetch(
+        APP_URL+'messages', 
+        {
+        headers: new Headers({
+          'User-agent': 'Mozilla/4.0 Custom User Agent',
+          'Authorization':`Bearer ${TOKEN}`
+        })
+      })
+      .then(response => response.json())
+      .then(data => { 
+        console.log(data.data)
+        var ui_data = "<table>";
+        if(isEmpty(data.data)){
+            ui_data += `<caption> Currently No ${caption} Messages</caption>`;
         }else{
-            data += "<caption>"+caption+" Messages</caption>";
-            msgJson.forEach(msg => {
-                data += "<tr onclick='readMessage("+msg.id+")'>"+
-                            "<td>"+msg.subj+"</td>"+
-                            "<td class='msg-body'>"+msg.body+"</td>"+
-                            "<td>"+ msg.date_time+
-                            "</td>"+
-                            "<td class='td-action'></td>"+
-                            "<td class='td-action'></td>"+
-                        "</tr>";           
+            ui_data += `<caption>${caption} Messages</caption>`;
+            data.data.forEach(msg => {
+                ui_data += `<tr onclick='readMessage(${msg.id})'>
+                            <td> ${msg.subject}</td>
+                            <td class='msg-body'> ${msg.msgbody} </td>
+                            <td> ${msg.createdon}</td>
+                            <td class='td-action'>del</td>
+                            <td class='td-action'></td>
+                        </tr>`;           
                 });    
         }
-        data +="</table>";
-        document.getElementById('main-body').innerHTML = data;
-    }else if(xmlhttp.status == 404){
-            console.log(xmlhttp.statusText)
-            document.getElementById('main-body').innerHTML = "<error>Error Occured. Contact Support Team</error>";
-        }
-    };
-
-    uri = "./static/js/"+caption+".json";
-    xmlhttp.open("GET",uri,true);
-    xmlhttp.send();
-
+        ui_data +="</table>";
+        document.getElementById('main-body').innerHTML = ui_data;
+      })
+      .catch(error => console.error(error))
+      
     function isEmpty(arg) {
         for (var item in arg) {
           return false;
