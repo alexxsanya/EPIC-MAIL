@@ -29,7 +29,7 @@ loadMessage = function(caption){
       })
       .then(response => response.json())
       .then(data => { 
-        console.log(data.data)
+          
         var ui_data = "<table>";
         if(isEmpty(data.data)){
             ui_data += `<caption> Currently No ${caption} Messages</caption>`;
@@ -59,7 +59,57 @@ loadMessage = function(caption){
 }
 
 readMessage = function(msg_id){
-    loadLocalHTML('message.html')
+
+    fetch(
+        APP_URL+'messages/'+msg_id, 
+        {
+        headers: new Headers({
+          'User-agent': 'Mozilla/4.0 Custom User Agent',
+          'Authorization':`Bearer ${TOKEN}`
+        })
+      })
+      .then(response => response.json())
+      .then(data => { 
+
+        message = data.data[0]
+        console.log(message)
+        messageCode = `<div class="msg-container">
+            <div class="msg-bar">
+                <div class="back-btn"> 
+                    <button onclick="loadMessage('inbox')">
+                            Back
+                    </div>
+                <div class="msg-actions">
+                    <div class="item">
+                        Reply
+                    </div>
+                    <div class="item" onclick="deleteMessage(${message.id})">
+                        Delete
+                    </div>
+                </div>
+            </div>
+            <div class="msg-display">
+                <div class="msg-title">
+                    <div class="subject"> ${message.subject}</div>
+                    <div class="sender"> <from>from</from> ${message.sender}</div>
+                    <div class="timedate"> ${message.createdon}</div>
+                </div>
+                <div class="msg-body">
+                    ${message.msgbody}
+                </div>
+
+                <div class="msg-reply-form">
+                    <textarea class="reply-msg-txtarea" placeholder="reply" 
+                        id="reply-msg-body" parent_id="${message.id}"></textarea>
+                    <button type="button" id="reply-msg-btn" class="reply-msg-btn">reply</button>
+                </div>
+            </div>
+
+        </div>`
+        document.getElementById('main-body').innerHTML = messageCode;
+      })
+      .catch(error => console.error(error))
+
 }
 resetPassword = function(){
     var reset_btn = document.getElementById('reset-pass')
