@@ -1,5 +1,6 @@
-APP_URL = 'https://api-epicmail-v2.herokuapp.com/api/v1/'
-//APP_URL = 'http://localhost:5000/api/v1/'
+//APP_URL = 'https://api-epicmail-v2.herokuapp.com/api/v1/'
+APP_URL = 'http://localhost:5000/api/v1/'
+const TOKEN = sessionStorage.getItem('token')
 loadLocalHTML = function (uri){
     var htmlCode = '';
     var xmlhttp = new XMLHttpRequest();
@@ -153,6 +154,49 @@ createUser = function(e){
           }) 
           .catch(error => console.error(error))
     }
+}
+
+sendMessage = function(){
+
+    msg_receiver = document.getElementById('msg-receiver').value
+    msg_body = document.getElementById('msg-body').value
+    msg_subject = document.getElementById('msg-subject').value
+    send_message = document.getElementById('send_message')
+    send_message.innerText = 'sending..'
+
+    if(msg_receiver.length>10 && msg_body.length>4){
+        message = {
+            "subject": msg_subject,
+            "receiver": msg_receiver,
+            "msgBody": msg_body
+        }
+        url = APP_URL+"messages"
+        fetch(url, {
+            method: 'POST', 
+            mode:"cors",
+            body: JSON.stringify(message), 
+            headers: new Headers({
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${TOKEN}`
+            }),
+          })
+          .then(response => response.json())
+          .then(data => {
+            
+            if(data.error == undefined){
+                console.log(data.data.message)
+                alert(data.data.message)
+            }else{
+                alert(data.error)
+            }
+            send_message.innerText = 'Send'
+          }) 
+          .catch(error => console.error(error))
+
+    }else{
+        alert('check, You have missing fields or with invalid data')
+    }
+    
 }
 
 App = function(){
