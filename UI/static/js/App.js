@@ -1,5 +1,5 @@
-APP_URL = 'https://api-epicmail-v2.herokuapp.com/api/v1/'
-//APP_URL = 'http://localhost:5000/api/v1/'
+//APP_URL = 'https://api-epicmail-v2.herokuapp.com/api/v1/'
+APP_URL = 'http://localhost:5000/api/v1/'
 const TOKEN = sessionStorage.getItem('token')
 loadLocalHTML = function (uri){
     var htmlCode = '';
@@ -50,11 +50,11 @@ loadMessage = function(caption){
         }else{
             ui_data += `<caption>${caption} Messages</caption>`;
             data.data.forEach(msg => {
-                ui_data += `<tr onclick='readMessage(${msg.id})'>
-                            <td> ${msg.subject}</td>
-                            <td class='msg-body'> ${msg.msgbody} </td>
-                            <td> ${msg.createdon}</td>
-                            <td class='td-action'>del</td>
+                ui_data += `<tr>
+                            <td onclick='readMessage(${msg.id})'> ${msg.subject}</td>
+                            <td class='msg-body' onclick='readMessage(${msg.id})'> ${msg.msgbody} </td>
+                            <td onclick='readMessage(${msg.id})'> ${msg.createdon}</td>
+                            <td class='td-action' onclick="deleteMessage(${msg.id})"><i class="far fa-trash-alt"></i></td>
                             <td class='td-action'></td>
                         </tr>`;           
                 });    
@@ -250,8 +250,10 @@ createUser = function(e){
           .then(data => {
             
             if(data.error == undefined){
-                console.log(data['data'][0].user)
+                console.log(data['data'][0].user)                    
                 sessionStorage.setItem('token',data['data'][0].token)
+                sessionStorage.setItem('username',data['data'][0].user.firstname)
+                location.replace("./")
             }else{
                 alert(data.error)
             }
@@ -261,7 +263,7 @@ createUser = function(e){
     }
 }
 
-sendMessage = function(){
+sendMessage = function(action){
 
     msg_receiver = document.getElementById('msg-receiver').value
     msg_body = document.getElementById('msg-body').value
@@ -269,13 +271,18 @@ sendMessage = function(){
     send_message = document.getElementById('send_message')
     send_message.innerText = 'sending..'
 
+    option = {
+        'save':APP_URL+"messages/draft",
+        'send':APP_URL+"messages"
+    }
+
     if(msg_receiver.length>10 && msg_body.length>4){
         message = {
             "subject": msg_subject,
             "receiver": msg_receiver,
             "msgBody": msg_body
         }
-        url = APP_URL+"messages"
+        url = option[action]
         fetch(url, {
             method: 'POST', 
             mode:"cors",
