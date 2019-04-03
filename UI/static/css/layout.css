@@ -130,6 +130,7 @@ table {
     border-collapse: collapse;
     width: 100%;
     font-size: 0.90em;
+    min-width: 900px;
   }
   tr{
     background: rgb(51, 121, 245);
