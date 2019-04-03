@@ -8,6 +8,47 @@ loadLocalHTML = function (uri){
     if(xmlhttp.status == 200 && xmlhttp.readyState == 4){
         htmlCode = xmlhttp.responseText;
         document.getElementById('main-body').innerHTML = htmlCode;
+
+        if(uri == "./components/groups.html"){
+            groups = document.getElementById('group-list')
+            
+            fetch(
+                APP_URL+'groups', 
+                {
+                headers: new Headers({
+                  'User-agent': 'Mozilla/4.0 Custom User Agent',
+                  'Authorization':`Bearer ${TOKEN}`
+                })
+              })
+              .then(response => response.json())
+              .then(data => { 
+                console.log(data.data[0])
+                groupList = data.data
+
+                groupHTML = `
+                    <table style="min-width:400px !important;">
+                    <caption>User Groups</caption>
+                    `
+                groupList.forEach(group => {
+                    groupHTML += `
+                        <tr>
+                        <td>${group.name}</td>
+                        <td>${group.role}</td>
+                        <td class='td-action positive' onclick="sendGroupMessage(${group.id})">
+                            <i class="far fa-paper-plane"></i>
+                        </td>
+                        <td class='td-action' onclick="deleteGroup(${group.id})">
+                            <i class="far fa-trash-alt"></i>
+                        </td>
+                        </tr>
+                    `
+                }) 
+                groupHTML += `</table>`
+
+                groups.innerHTML = groupHTML
+              })
+              .catch(error => console.error(error))
+            }
         }
     };
     uri = "./components/"+uri;
@@ -129,6 +170,7 @@ readMessage = function(msg_id){
       .catch(error => console.error(error))
 
 }
+
 resetPassword = function(){
     var reset_btn = document.getElementById('reset-pass')
     var reset_value = document.getElementById('recover-to')
@@ -185,11 +227,9 @@ addGroup = function(){
             if(data.error == undefined){
                 console.log(data.data)
                 status_label.innerHTML = '<success>Group successfully created<success>'
-                name.value('')
-                role.value('')
                 setTimeout(function(){
-                    status_label.setAttribute('hidden','hidden')
-                }, 3000)
+                    loadLocalHTML('groups.html')
+                }, 5000)
             }else{
                 alert(data.error)
             }
