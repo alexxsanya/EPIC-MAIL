@@ -1,6 +1,6 @@
 <div class="groups-container">
   <div class="groups-view">
-      <table style="width:90%">
+      <table style="min-width:400px !important;">
           <caption>User Groups</caption>
           <tr>
             <td>DEV Team</td>
@@ -25,6 +25,7 @@
     </div>
     <div class="groups-forms">
       <div id="create-group-container">
+          <status id="resp-status"></status>
           <div class="form-holder">
               <input type="text" class="form-holder-item" id="group-name" 
                   placeholder="Group name" minlength="4" maxlength="15" required/>
@@ -34,7 +35,7 @@
                 id="group-description" style="width: 100%;height: 6vh;"></textarea>
             </div>
           <div class="form-holder ">
-              <button type="button" class="form-holder-item">Create</input>
+              <button type="button" id="create-group" class="form-holder-item">Create</input>
          </div>
       </div>
       <div id="add-member-container">
