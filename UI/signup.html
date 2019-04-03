@@ -9,6 +9,7 @@
         <meta name="author" content="alexxsanya">
 
         <link rel="stylesheet" href="static/css/login.css">
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
     </head>
 
     <body>
@@ -19,13 +20,21 @@
             <div class="box" style="width:500px;">
                 <form class="signup-form" id="signup-form" name="signup" method="POST">
                     <div class="form-holder">
-                        <label class="form-holder-label"></label>
+                        <label class="form-holder-label">
+                            <span style="font-size: 1.5em; color: #fff;">
+                                <i class="far fa-user"></i>
+                            </span>
+                        </label>
                         <input type="text" class="form-holder-item" id="user-firstname"
                             name="firstname" placeholder="First name" minlength="4" maxlength="15" required
                             pattern="([A-Za-z]).{2,25}"/>
                     </div>
                     <div class="form-holder">
-                        <label class="form-holder-label"></label>
+                        <label class="form-holder-label">
+                                <span style="font-size: 1.5em; color: #fff;">
+                                    <i class="far fa-user"></i>
+                                </span>
+                        </label>
                         <input type="text" class="form-holder-item" id="user-lastname" 
                             name="lastname" placeholder="Last name" minlength="4" maxlength="15" required
                             pattern="([A-Za-z]).{2,25}"/>
@@ -36,14 +45,22 @@
                                 placeholder="Preferred username" name="email"  minlength="4" maxlength="25" required/>
                         <label class="form-holder-label email">@epicmail.com</label>
                     </div>
-                    <div class="form-holder">
-                        <label class="form-holder-label"></label>
+                    <div class="form-holder"> 
+                        <label class="form-holder-label">
+                                <span style="font-size: 1.5em; color: #fff;">
+                                    <i class="fas fa-at"></i>
+                                </span>
+                        </label>
                         <input type="text" class="form-holder-item" id="user-email-recovery" 
                                 placeholder="Enter recovery email" 
                                 name="recovery_email" minlength="10" maxlength="50" required/>
                     </div>
                     <div class="form-holder">
-                            <label class="form-holder-label"></label>
+                            <label class="form-holder-label">
+                                    <span style="font-size: 1.5em; color: #fff;">
+                                        <i class="fab fa-expeditedssl"></i>
+                                    </span>
+                            </label>
                             <input type="password" class="form-holder-item" id="user-pass" 
                                     name="password" placeholder="Preferred Password" 
                                     minlength="8" maxlength="25" required
@@ -54,7 +71,11 @@
                             atleast &,@,#
                     </small>
                     <div class="form-holder">
-                                <label class="form-holder-label"></label>
+                            <label class="form-holder-label">
+                                    <span style="font-size: 1.5em; color: #fff;">
+                                        <i class="fab fa-expeditedssl"></i>
+                                    </span>
+                            </label>
                                 <input type="password" class="form-holder-item" id="user-pass2" 
                                         placeholder="Confirm Password"  required
                                         pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,25}"/>
