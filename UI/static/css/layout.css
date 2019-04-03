@@ -163,15 +163,19 @@ table {
     font-size: 20px;
   }
 
-  error{
-    color: #fff;
+  error,success{
+    color: #F44336;
     padding: 5px 10px;
-    background: red;
-    border-radius: 15px;
+    background: #efe3e3;
+    border-radius: 5px;
     text-align: center;
     font-size: 0.9em;
-    width:60%;
-    margin:auto;
+    width: 60%;
+    margin: auto;
+  }
+  success{
+    color: #444;
+    background: #b0ef3b4d;
   }
 
   .msg-container{
