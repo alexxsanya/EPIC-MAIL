@@ -55,7 +55,12 @@
 
     <script type="text/javascript">
         window.onload = function(){
-            loadMessage('inbox')
+            current_page = sessionStorage.getItem('current_page')
+            if(current_page==undefined){
+                loadMessage('inbox')
+            }else{
+                loadMessage(`${current_page}`)
+            }
             App()
         }
     </script>
