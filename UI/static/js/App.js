@@ -1,5 +1,5 @@
-APP_URL = 'https://api-epicmail-v2.herokuapp.com/api/v1/'
-//APP_URL = 'http://localhost:5000/api/v1/'
+//APP_URL = 'https://api-epicmail-v2.herokuapp.com/api/v1/'
+APP_URL = 'http://localhost:5000/api/v1/'
 const TOKEN = sessionStorage.getItem('token')
 loadLocalHTML = function (uri){
     var htmlCode = '';
@@ -33,7 +33,7 @@ loadLocalHTML = function (uri){
                         <tr>
                         <td>${group.name}</td>
                         <td>${group.role}</td>
-                        <td class='td-action positive' onclick="sendGroupMessage(${group.id})">
+                        <td class='td-action positive' onclick="sendGroupMessage(${group.id},'${group.name}')">
                             <i class="far fa-paper-plane"></i>
                         </td>
                         <td class='td-action' onclick="deleteGroup(${group.id})">
@@ -42,6 +42,12 @@ loadLocalHTML = function (uri){
                         </tr>
                     `
                 }) 
+                if(groupList === []){
+                    groupHTML = `
+                    <table style="min-width:400px !important;">
+                    <caption>You Currently Have No Groups</caption>
+                    `
+                }
                 groupHTML += `</table>`
 
                 groups.innerHTML = groupHTML
@@ -227,7 +233,7 @@ addGroup = function(){
                     loadLocalHTML('groups.html')
                 }, 5000)
             }else{
-                alert(data.error)
+                console.log(data.error)
             }
           }) 
           .catch(error => console.error(error))
@@ -253,8 +259,6 @@ addMembertoGroup = function(){
 
         user_id = user_name.split("-")[0]
         
-        alert(`${group_id} ${user_name} ${user_role}`)
-
         group_user = {
             "user_id":user_id,
             "user_role":user_role
@@ -332,7 +336,7 @@ createUser = function(e){
                 sessionStorage.setItem('username',data['data'][0].user.firstname)
                 location.replace("./")
             }else{
-                alert(data.error)
+                console.log(data.error)
             }
             signup_btn.innerText = "CREATE Account"
           }) 
@@ -353,7 +357,7 @@ sendMessage = function(action){
         'send':APP_URL+"messages"
     }
 
-    if(msg_receiver.length>10 && msg_body.length>4){
+    if(msg_receiver.length>10 && msg_body.length>1){
         message = {
             "subject": msg_subject,
             "receiver": msg_receiver,
@@ -375,8 +379,9 @@ sendMessage = function(action){
             if(data.error == undefined){
                 console.log(data.data.message)
                 alert(data.data.message)
+                loadMessage('inbox')
             }else{
-                alert(data.error)
+                console.log(data.error)
             }
             send_message.innerText = 'Send'
           }) 
@@ -442,6 +447,60 @@ deleteGroup = function(id){
       }
 }
 
+sendGroupMessage = function(group_id, group_name){
+    document.getElementById('display-modal').style.display='block'
+    
+    let container = document.getElementById('main-area')
+    let modal_title = document.getElementById('modal-title')
+
+    sendGMessage = function(){
+        
+        let msg_subject = document.getElementById('g-msg-subject').value
+        let msg_body = document.getElementById('g-msg-body').value
+        let send_btn = document.getElementById('send_group_message')
+        status_label = document.getElementById('group-msg-status')
+        send_btn.innerHTML = "processing.."
+        msg = {
+            "subject":msg_subject,
+            "msgBody":msg_body,
+            "parentId":0,
+        };
+
+        fetch(`${APP_URL}groups/${group_id}/messages`, {
+            method: 'POST', 
+            mode:"cors",
+            body: JSON.stringify(msg), 
+            headers: new Headers({
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${TOKEN}`
+            }),
+          })
+          .then(response => response.json())
+          .then(data => {
+            
+            if(data.error == undefined){
+                console.log(data.data)
+                status_label.innerHTML = `
+                    <success>Message has been sent</success>
+                `
+
+                setTimeout(function(){
+                    document.getElementById('display-modal').style.display='none'
+                }, 3000)
+
+            }else{
+                status_label.innerHTML = `
+                    <error>Message has not been sent, try again</error>
+                `
+                console.log(data.error)
+            }
+            send_btn.innerText = 'Send'
+          }) 
+          .catch(error => console.error(error))
+    }   
+  
+}
+
 generateUserList = function(){
 
     let users_list = document.getElementById('user-list')
@@ -503,11 +562,23 @@ generateGroupList = function(){
       .catch(error => console.error(error))
 }
 
+logout = function(){
+    sessionStorage.removeItem('token')
+    location.replace('./login.html')
+}
+
 App = function(){
     console.log('EPIC-MAIL system loaded')
     token = sessionStorage.getItem('token')
     if(token === null || token.length<150){
         location.replace('./login.html')
+    }
+
+    var modal = document.getElementById('display-modal');
+    window.onclick = function(event) {
+        if (event.target == modal) {
+            modal.style.display = "none";
+        }
     }
 }
 
@@ -545,7 +616,7 @@ LoginApp = function(){
                     sessionStorage.setItem('username',data['data'][0].user.firstname)
                     location.replace("./") 
                 }else{
-                    alert(data.error)  
+                    console.log(data.error)  
                 }  
                 login_btn.innerText = "Login"  
               }) 

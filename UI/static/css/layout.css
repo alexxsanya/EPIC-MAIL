@@ -463,7 +463,7 @@ button.form-holder-item{
 .compose-message-container .message-bar .actions .item{
     flex-grow: 0;
     margin: 0 5px;
-    color: #ddd;
+    color: #fff;
     font-size: 1.0rem;
     cursor: pointer;
     background: #3379f5;
@@ -499,4 +499,45 @@ button.form-holder-item{
 #member-user-name,#member-group-name,#group-name{
     font-size: 13px;
     padding: 5px 6px;
+}
+
+.modal {
+    display: none; 
+    position: fixed;  
+    z-index: 1;  
+    left: 0;
+    top: 0;
+    width: 100%; 
+    height: 100%;  
+    overflow: hidden;    
+    background-color:rgba(167, 157, 157, 0.7);
+    padding-top: 50px;
+} 
+.modal-content {
+    background-color: #fefefe;
+    margin: 5% auto 15% auto;
+    border: 1px solid #888;
+    width: 500px; 
+    padding: 10px;
+}
+ 
+.close {
+    position: absolute;
+    right: 35px;
+    top: 15px;
+    font-size: 40px;
+    font-weight: bold;
+    color: #f1f1f1;
+}
+
+.close:hover,
+.close:focus {
+    color: #f44336;
+    cursor: pointer;
+}
+ 
+.clearfix::after {
+    content: "";
+    clear: both;
+    display: table;
 }
