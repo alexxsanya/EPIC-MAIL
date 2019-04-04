@@ -31,7 +31,7 @@ loadLocalHTML = function (uri){
                 groupList.forEach(group => {
                     groupHTML += `
                         <tr>
-                        <td>${group.name}</td>
+                        <td onclick="showMembers(${group.id},'${group.name}')">${group.name}</td>
                         <td>${group.role}</td>
                         <td class='td-action positive' onclick="sendGroupMessage(${group.id},'${group.name}')">
                             <i class="far fa-paper-plane"></i>
@@ -42,7 +42,7 @@ loadLocalHTML = function (uri){
                         </tr>
                     `
                 }) 
-                if(groupList === []){
+                if(groupList.length < 0){
                     groupHTML = `
                     <table style="min-width:400px !important;">
                     <caption>You Currently Have No Groups</caption>
@@ -159,11 +159,11 @@ readMessage = function(msg_id){
                     ${message.msgbody}
                 </div>
 
-                <div class="msg-reply-form">
+                <!--div class="msg-reply-form">
                     <textarea class="reply-msg-txtarea" placeholder="reply" 
                         id="reply-msg-body" parent_id="${message.id}"></textarea>
                     <button type="button" id="reply-msg-btn" class="reply-msg-btn">reply</button>
-                </div>
+                </div-->
             </div>
 
         </div>`
@@ -228,10 +228,12 @@ addGroup = function(){
             
             if(data.error == undefined){
                 console.log(data.data)
-                status_label.innerHTML = '<success>Group successfully created<success>'
+                status_label.innerHTML = '<success>Group successfully created</success>'
                 setTimeout(function(){
                     loadLocalHTML('groups.html')
-                }, 5000)
+                    status_label.innerHTML=""
+                }, 2000)
+                
             }else{
                 console.log(data.error)
             }
@@ -278,10 +280,11 @@ addMembertoGroup = function(){
             
             if(data.error == undefined){
                 console.log(data.data)
-                status_label.innerHTML = '<success>Member successfully added<success>'
+                status_label.innerHTML = '<success>Member successfully added</success>'
                 setTimeout(function(){
                     loadLocalHTML('groups.html')
-                }, 5000)
+                    status_label.innerHTML=""
+                }, 2000)
             }else{
                 status_label.innerHTML = `<error>${data.error}</error>`
                 console.log(data.error)
@@ -315,7 +318,8 @@ createUser = function(e){
         let userData = {}
     
         formData.set("email", formData.get('email')+'@epicmail.com');
-    
+        formData.set('recovery_email','alex@epicmail.com')
+
         formData.forEach((value, key) => {userData[key] = value});
     
         url = APP_URL+"auth/signup"
@@ -480,12 +484,11 @@ sendGroupMessage = function(group_id, group_name){
             
             if(data.error == undefined){
                 console.log(data.data)
-                status_label.innerHTML = `
-                    <success>Message has been sent</success>
-                `
+                status_label.innerHTML = `<success>Message has been sent</success>`
 
                 setTimeout(function(){
                     document.getElementById('display-modal').style.display='none'
+                    status_label.innerHTML=""
                 }, 3000)
 
             }else{
@@ -503,7 +506,7 @@ sendGroupMessage = function(group_id, group_name){
 
 generateUserList = function(){
 
-    let users_list = document.getElementById('user-list')
+    let user_selector = document.getElementById('user-list')
 
     fetch(`${APP_URL}auth/users`, {
         method: 'GET', 
@@ -520,11 +523,13 @@ generateUserList = function(){
         if(data.error == undefined){
             USERS_LIST.forEach(user => {
                 var option = document.createElement('option');
-                // option.value = `${user.email}`
-                option.innerHTML = `${user.id} - ${user.firstname.toLowerCase()} 
-                    ${user.lastname.toLowerCase()} `;
+                
+                username =user.id.toString()+'-'+user.firstname
+                // option.value = user.id.toString()
+                option.innerHTML = username;
 
-                users_list.appendChild(option);
+                console.log(`${user.id}-${user.firstname}`)
+                user_selector.appendChild(option);
 
             })
         }else{
@@ -562,6 +567,88 @@ generateGroupList = function(){
       .catch(error => console.error(error))
 }
 
+showMembers = function(group_id,group_name){
+    document.getElementById('group-member-modal').style.display='block'
+    
+    members_list = document.getElementById('members-list')
+
+    fetch(`${APP_URL}groups/${group_id}/users`, {
+        method: 'GET', 
+        mode:"cors",
+        headers: new Headers({
+          'Authorization': `Bearer ${TOKEN}`
+        }),
+      })
+      .then(response => response.json())
+      .then(data => {
+
+        USERS_LIST = data.data
+        console.log(USERS_LIST)
+        if(data.error == undefined){
+
+            memberHTML = `
+                <table style="min-width:480px !important;">
+                <caption style="font-size:17px;"><b>${group_name}</b> Group Members</caption>
+                <tr>
+                    <th>Member Name</th>
+                    <th>Role</th> 
+                    <th></th> 
+                </tr>
+                `
+                USERS_LIST.forEach(user => {
+                memberHTML += `
+                    <tr>
+                        <td>
+                            ${user.firstname} ${user.lastname}
+                        </td>
+                        <td>
+                            ${user.role}
+                        </td>
+                        <td class='td-action positive' onclick="removeGroupUser(${user.id})">
+                            <i class="far fa-trash-alt"></i> remove
+                        </td>
+                    </tr>
+                `
+            }) 
+            if(USERS_LIST.length < 1){
+                memberHTML = `
+                <table style="min-width:480px !important;">
+                <caption>Group currently has no member</caption>
+                `
+            }
+            memberHTML += `</table>`
+            members_list.innerHTML = memberHTML
+        }else{
+            console.log(data.error)
+        }
+      }) 
+      .catch(error => console.error(error)) 
+
+      removeGroupUser = function(user_id){
+        status_label = document.getElementById('memba-msg-status')
+        fetch(`${APP_URL}groups/${group_id}/users/${user_id}`, {
+            method: 'DELETE', 
+            mode:"cors",
+            headers: new Headers({
+              'Authorization': `Bearer ${TOKEN}`
+            }),
+          })
+          .then(response => response.json())
+          .then(data => {
+            if(data.error == undefined){
+                status_label.innerHTML = '<success>Member successfully removed</success>'
+                setTimeout(function(){
+                    document.getElementById('group_member_modal').style.display='none'
+                    status_label.innerHTML = ""
+                }, 3000)
+            }else{
+                console.log(data.error)
+            }
+          }) 
+          .catch(error => console.error(error)) 
+      }
+}
+
 logout = function(){
     sessionStorage.removeItem('token')
     location.replace('./login.html')
@@ -575,10 +662,14 @@ App = function(){
     }
 
     var modal = document.getElementById('display-modal');
+    var group_member_modal = document.getElementById('group-member-modal');
     window.onclick = function(event) {
         if (event.target == modal) {
             modal.style.display = "none";
+        }else if(event.target == group_member_modal){
+            group_member_modal.style.display = "none"
         }
+
     }
 }
 
