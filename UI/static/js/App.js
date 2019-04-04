@@ -1,5 +1,5 @@
-APP_URL = 'https://api-epicmail-v2.herokuapp.com/api/v1/'
-//APP_URL = 'http://localhost:5000/api/v1/'
+//APP_URL = 'https://api-epicmail-v2.herokuapp.com/api/v1/'
+APP_URL = 'http://localhost:5000/api/v1/'
 const TOKEN = sessionStorage.getItem('token')
 loadLocalHTML = function (uri){
     var htmlCode = '';
@@ -31,9 +31,9 @@ loadLocalHTML = function (uri){
                 groupList.forEach(group => {
                     groupHTML += `
                         <tr>
-                        <td>${group.name}</td>
+                        <td onclick="showMembers(${group.id},'${group.name}')">${group.name}</td>
                         <td>${group.role}</td>
-                        <td class='td-action positive' onclick="sendGroupMessage(${group.id})">
+                        <td class='td-action positive' onclick="sendGroupMessage(${group.id},'${group.name}')">
                             <i class="far fa-paper-plane"></i>
                         </td>
                         <td class='td-action' onclick="deleteGroup(${group.id})">
@@ -42,6 +42,12 @@ loadLocalHTML = function (uri){
                         </tr>
                     `
                 }) 
+                if(groupList.length < 0){
+                    groupHTML = `
+                    <table style="min-width:400px !important;">
+                    <caption>You Currently Have No Groups</caption>
+                    `
+                }
                 groupHTML += `</table>`
 
                 groups.innerHTML = groupHTML
@@ -153,11 +159,11 @@ readMessage = function(msg_id){
                     ${message.msgbody}
                 </div>
 
-                <div class="msg-reply-form">
+                <!--div class="msg-reply-form">
                     <textarea class="reply-msg-txtarea" placeholder="reply" 
                         id="reply-msg-body" parent_id="${message.id}"></textarea>
                     <button type="button" id="reply-msg-btn" class="reply-msg-btn">reply</button>
-                </div>
+                </div-->
             </div>
 
         </div>`
@@ -222,12 +228,14 @@ addGroup = function(){
             
             if(data.error == undefined){
                 console.log(data.data)
-                status_label.innerHTML = '<success>Group successfully created<success>'
+                status_label.innerHTML = '<success>Group successfully created</success>'
                 setTimeout(function(){
                     loadLocalHTML('groups.html')
-                }, 5000)
+                    status_label.innerHTML=""
+                }, 2000)
+                
             }else{
-                alert(data.error)
+                console.log(data.error)
             }
           }) 
           .catch(error => console.error(error))
@@ -253,8 +261,6 @@ addMembertoGroup = function(){
 
         user_id = user_name.split("-")[0]
         
-        alert(`${group_id} ${user_name} ${user_role}`)
-
         group_user = {
             "user_id":user_id,
             "user_role":user_role
@@ -274,10 +280,11 @@ addMembertoGroup = function(){
             
             if(data.error == undefined){
                 console.log(data.data)
-                status_label.innerHTML = '<success>Member successfully added<success>'
+                status_label.innerHTML = '<success>Member successfully added</success>'
                 setTimeout(function(){
                     loadLocalHTML('groups.html')
-                }, 5000)
+                    status_label.innerHTML=""
+                }, 2000)
             }else{
                 status_label.innerHTML = `<error>${data.error}</error>`
                 console.log(data.error)
@@ -311,7 +318,8 @@ createUser = function(e){
         let userData = {}
     
         formData.set("email", formData.get('email')+'@epicmail.com');
-    
+        formData.set('recovery_email','alex@epicmail.com')
+
         formData.forEach((value, key) => {userData[key] = value});
     
         url = APP_URL+"auth/signup"
@@ -332,7 +340,7 @@ createUser = function(e){
                 sessionStorage.setItem('username',data['data'][0].user.firstname)
                 location.replace("./")
             }else{
-                alert(data.error)
+                console.log(data.error)
             }
             signup_btn.innerText = "CREATE Account"
           }) 
@@ -353,7 +361,7 @@ sendMessage = function(action){
         'send':APP_URL+"messages"
     }
 
-    if(msg_receiver.length>10 && msg_body.length>4){
+    if(msg_receiver.length>10 && msg_body.length>1){
         message = {
             "subject": msg_subject,
             "receiver": msg_receiver,
@@ -375,8 +383,9 @@ sendMessage = function(action){
             if(data.error == undefined){
                 console.log(data.data.message)
                 alert(data.data.message)
+                loadMessage('inbox')
             }else{
-                alert(data.error)
+                console.log(data.error)
             }
             send_message.innerText = 'Send'
           }) 
@@ -389,32 +398,115 @@ sendMessage = function(action){
 }
 
 deleteMessage = function(id){
-    url = `${APP_URL}messages/${id}`;
-    current_page = sessionStorage.getItem('current_page')
-    fetch(url, {
-        method: 'DELETE', 
-        mode:"cors",
-        headers: new Headers({
-          'Authorization': `Bearer ${TOKEN}`
-        }),
-      })
-      .then(response => response.json())
-      .then(data => {
+    if (confirm("Are you sure you want to delete this Message!")) {
+        url = `${APP_URL}messages/${id}`;
+        current_page = sessionStorage.getItem('current_page')
+        fetch(url, {
+            method: 'DELETE', 
+            mode:"cors",
+            headers: new Headers({
+            'Authorization': `Bearer ${TOKEN}`
+            }),
+        })
+        .then(response => response.json())
+        .then(data => {
+            
+            if(data.error == undefined){
+                console.log(data.data.message)
+                alert(data.data.message)
+                location.replace("./") 
+            }else{
+                console.log(data.error)
+            }
+        }) 
+        .catch(error => console.error(error)) 
+    }
+}
+
+deleteGroup = function(id){
+    if (confirm("Are you sure you want to delete this Group!")) {
+        url = `${APP_URL}groups/${id}`;
+        current_page = sessionStorage.getItem('current_page')
+        fetch(url, {
+            method: 'DELETE', 
+            mode:"cors",
+            headers: new Headers({
+              'Authorization': `Bearer ${TOKEN}`
+            }),
+          })
+          .then(response => response.json())
+          .then(data => {
+            
+            if(data.error == undefined){
+                console.log(data.data)
+                alert("Group deleted successfully")
+                setTimeout(function(){
+                    loadLocalHTML('groups.html')
+                }, 2000)
+            }else{
+                console.log(data.error)
+            }
+          }) 
+          .catch(error => console.error(error)) 
+      }
+}
+
+sendGroupMessage = function(group_id, group_name){
+    document.getElementById('display-modal').style.display='block'
+    
+    let container = document.getElementById('main-area')
+    let modal_title = document.getElementById('modal-title')
+
+    sendGMessage = function(){
         
-        if(data.error == undefined){
-            console.log(data.data.message)
-            alert(data.data.message)
-            location.replace("./") 
-        }else{
-            console.log(data.error)
-        }
-      }) 
-      .catch(error => console.error(error)) 
+        let msg_subject = document.getElementById('g-msg-subject').value
+        let msg_body = document.getElementById('g-msg-body').value
+        let send_btn = document.getElementById('send_group_message')
+        status_label = document.getElementById('group-msg-status')
+        send_btn.innerHTML = "processing.."
+        msg = {
+            "subject":msg_subject,
+            "msgBody":msg_body,
+            "parentId":0,
+        };
+
+        fetch(`${APP_URL}groups/${group_id}/messages`, {
+            method: 'POST', 
+            mode:"cors",
+            body: JSON.stringify(msg), 
+            headers: new Headers({
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${TOKEN}`
+            }),
+          })
+          .then(response => response.json())
+          .then(data => {
+            
+            if(data.error == undefined){
+                console.log(data.data)
+                status_label.innerHTML = `<success>Message has been sent</success>`
+
+                setTimeout(function(){
+                    document.getElementById('display-modal').style.display='none'
+                    status_label.innerHTML=""
+                }, 3000)
+
+            }else{
+                status_label.innerHTML = `
+                    <error>Message has not been sent, try again</error>
+                `
+                console.log(data.error)
+            }
+            send_btn.innerText = 'Send'
+          }) 
+          .catch(error => console.error(error))
+    }   
+  
 }
 
 generateUserList = function(){
 
-    let users_list = document.getElementById('user-list')
+    let user_selector = document.getElementById('user-list')
 
     fetch(`${APP_URL}auth/users`, {
         method: 'GET', 
@@ -431,11 +523,13 @@ generateUserList = function(){
         if(data.error == undefined){
             USERS_LIST.forEach(user => {
                 var option = document.createElement('option');
-                // option.value = `${user.email}`
-                option.innerHTML = `${user.id} - ${user.firstname.toLowerCase()} 
-                    ${user.lastname.toLowerCase()} `;
+                
+                username =user.id.toString()+'-'+user.firstname
+                // option.value = user.id.toString()
+                option.innerHTML = username;
 
-                users_list.appendChild(option);
+                console.log(`${user.id}-${user.firstname}`)
+                user_selector.appendChild(option);
 
             })
         }else{
@@ -473,11 +567,109 @@ generateGroupList = function(){
       .catch(error => console.error(error))
 }
 
+showMembers = function(group_id,group_name){
+    document.getElementById('group-member-modal').style.display='block'
+    
+    members_list = document.getElementById('members-list')
+
+    fetch(`${APP_URL}groups/${group_id}/users`, {
+        method: 'GET', 
+        mode:"cors",
+        headers: new Headers({
+          'Authorization': `Bearer ${TOKEN}`
+        }),
+      })
+      .then(response => response.json())
+      .then(data => {
+
+        USERS_LIST = data.data
+        console.log(USERS_LIST)
+        if(data.error == undefined){
+
+            memberHTML = `
+                <table style="min-width:480px !important;">
+                <caption style="font-size:17px;"><b>${group_name}</b> Group Members</caption>
+                <tr>
+                    <th>Member Name</th>
+                    <th>Role</th> 
+                    <th></th> 
+                </tr>
+                `
+                USERS_LIST.forEach(user => {
+                memberHTML += `
+                    <tr>
+                        <td>
+                            ${user.firstname} ${user.lastname}
+                        </td>
+                        <td>
+                            ${user.role}
+                        </td>
+                        <td class='td-action positive' onclick="removeGroupUser(${user.id})">
+                            <i class="far fa-trash-alt"></i> remove
+                        </td>
+                    </tr>
+                `
+            }) 
+            if(USERS_LIST.length < 1){
+                memberHTML = `
+                <table style="min-width:480px !important;">
+                <caption>Group currently has no member</caption>
+                `
+            }
+            memberHTML += `</table>`
+            members_list.innerHTML = memberHTML
+        }else{
+            console.log(data.error)
+        }
+      }) 
+      .catch(error => console.error(error)) 
+
+      removeGroupUser = function(user_id){
+        status_label = document.getElementById('memba-msg-status')
+        fetch(`${APP_URL}groups/${group_id}/users/${user_id}`, {
+            method: 'DELETE', 
+            mode:"cors",
+            headers: new Headers({
+              'Authorization': `Bearer ${TOKEN}`
+            }),
+          })
+          .then(response => response.json())
+          .then(data => {
+            if(data.error == undefined){
+                status_label.innerHTML = '<success>Member successfully removed</success>'
+                setTimeout(function(){
+                    document.getElementById('group_member_modal').style.display='none'
+                    status_label.innerHTML = ""
+                }, 3000)
+            }else{
+                console.log(data.error)
+            }
+          }) 
+          .catch(error => console.error(error)) 
+      }
+}
+
+logout = function(){
+    sessionStorage.removeItem('token')
+    location.replace('./login.html')
+}
+
 App = function(){
     console.log('EPIC-MAIL system loaded')
     token = sessionStorage.getItem('token')
     if(token === null || token.length<150){
         location.replace('./login.html')
+    }
+
+    var modal = document.getElementById('display-modal');
+    var group_member_modal = document.getElementById('group-member-modal');
+    window.onclick = function(event) {
+        if (event.target == modal) {
+            modal.style.display = "none";
+        }else if(event.target == group_member_modal){
+            group_member_modal.style.display = "none"
+        }
+
     }
 }
 
@@ -515,7 +707,7 @@ LoginApp = function(){
                     sessionStorage.setItem('username',data['data'][0].user.firstname)
                     location.replace("./") 
                 }else{
-                    alert(data.error)  
+                    console.log(data.error)  
                 }  
                 login_btn.innerText = "Login"  
               }) 

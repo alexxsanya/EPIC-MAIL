@@ -22,7 +22,7 @@
                     
                 </div>
                 <div class="nav-item">
-                    <a href="./login.html"  class="logout">logout</a>
+                    <a href="#" onclick="logout()"  class="logout">logout</a>
                 </div>
             </div>
         </div>
@@ -36,6 +36,9 @@
                 <div class="menu-item" onclick="loadMessage('inbox')">
                     <i class="fas fa-inbox"></i> &nbsp; Inbox
                 </div>
+                <div class="menu-item" onclick="loadMessage('unread')">
+                        <i class="fas fa-inbox"></i> &nbsp; Unread
+                    </div>
                 <div class="menu-item" onclick="loadMessage('sent')">
                     <i class="fas fa-envelope-open-text"></i> &nbsp; Sent
                 </div>
@@ -52,7 +55,54 @@
                 </div>
             </div>
         </div>
+        <div id="display-modal" class="modal">
+                <span onclick="document.getElementById('display-modal').style.display='none'" 
+                    class="close" title="Close Modal">&times;</span>
+                <div class="modal-content">
+                    <div class="leftcolumn">
+                        <div class="card" id="main-area">
+                            <h3 id="model-title">Send Message to a Group</h3>
+                            <div class="compose-message-container">
+                                    <status id="group-msg-status"></status>
+                                    <div class="msg-subject">
+                                        <div class="form-holder">
+                                            <input type="text" class="form-holder-item" id="g-msg-subject" 
+                                                    placeholder="Subject" minlength="4" maxlength="200" required/>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="msg-body">
+                                        <textarea  class="form-holder-item" 
+                                        placeholder="Message body" 
+                                        id="g-msg-body" style="width:97%;padding:5px;min-height:5vh"></textarea>
+                                    </div>    
+                                <div class="message-bar">
+                                    <div class="actions">
+                                        <div class="item">
+                                            <div id="send_group_message" onclick="sendGMessage()">Send</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div> 
+                        </div>
+                    </div>    
+                </div>
+        </div> 
 
+        <div id="group-member-modal" class="modal">
+                <span onclick="document.getElementById('group-member-modal').style.display='none'" 
+                    class="close" title="Close Modal">&times;</span>
+                <div class="modal-content" style="min-width:500px !important;padding: 20px;">
+                    <div class="leftcolumn">
+                        <div class="card" id="main-area">
+                            <status id="memba-msg-status"></status>
+                            <div id="members-list">
+                                
+                            </div>
+                        </div>
+                    </div>    
+                </div>
+        </div> 
     </body>
 
     <script src="static/js/App.js" type="text/javascript"></script>

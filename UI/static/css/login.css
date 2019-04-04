@@ -20,7 +20,8 @@ body{
 }
 
 .box{
-    background-color: #b6c7ee;
+    background-color: #fff;
+    border:1px solid #daddde;
     width: 400px;
     min-height: 300px;
     /*border-radius:10px;*/
@@ -120,7 +121,7 @@ button.form-holder-item{
 .step-down a.forgot_password{
     margin: 10px;
     margin-top: 20px;
-    color: #ffffff;
+    color: #666;
 }
 .modal {
     display: none;
