@@ -74,14 +74,13 @@ body{
     align-items: center;
     width:20%; 
     height: 100%; 
-    background: rgba(241, 235, 235, 0.69);
     /*border-radius: 15px;*/
 }
 .sidebar .menu-item{
     width:60%;
     margin: 5px 0;
     text-align: left;
-    color:#222;
+    color:#333;
     font-size: 0.90em;
     line-height: 2.00em;
     padding:0 20px;
@@ -106,7 +105,6 @@ body{
     flex-direction: row; 
     width:78%;  
     height:100%;
-    background: rgba(241, 235, 235, 0.69);
     padding:20px 20px;
     overflow-y: auto;
     border-left:1px solid gray;
@@ -143,7 +141,7 @@ table {
     color: #555;
   }
   tr:hover{
-    background:rgba(51, 121, 245, 0.7);
+    background:rgba(51, 121, 245);
     color:#fff;
     cursor: pointer;
   }
@@ -152,7 +150,7 @@ table {
     padding: 8px;
   }
   td.td-action{
-    color:#3379f5;
+    color:#bbbbbb;
   }
   td.td-action:hover{
       color:#f91212;
@@ -213,16 +211,15 @@ table {
 .back-btn button {
     min-width: 15%;
     margin: 0;
-    /*border-radius: 0px;
-    border-radius: 10px;*/
     padding: 4px 6px;
     border-width: 0px;
     border-style: outset;
     border-image: initial;
     font-size: 1.2rem;
-    color: #ffffff;
-    background-color: rgba(99, 99, 103, 0.5215);
+    color: #000;
     cursor: pointer;
+    background: transparent;
+    border:1px solid #b6babb;
   }
 
 .msg-actions{
@@ -236,7 +233,7 @@ table {
 .msg-actions .item{
     flex-grow: 0;
     margin: 0 5px;
-    color: #ddd;
+    color: #fff;
     font-size: 1.0rem;
     cursor: pointer;
     background: #3379f5;
@@ -246,7 +243,7 @@ table {
   }
 
 .msg-actions .item:hover{
-    color: #fff;
+    background: #7da6f1;
 }
 
 .msg-display{
@@ -259,8 +256,8 @@ table {
     flex-direction: row;
     padding:15px 15px;
     margin-top:10px;
-    background-color: rgba(99, 99, 103, 0.5215);
-    color:#111;
+    border:1px solid #b6babb;
+    color:#333;
 }
 
 .msg-display .msg-title .subject, 
@@ -271,9 +268,8 @@ table {
 
 from{
     padding: 2px 5px;
-    background-color: rgba(245, 149, 51, 0.56);
-    /*border-radius: 5px;*/
-    color: #ddd;
+    background-color: #fff;
+    color: #3379f5;
     font-size:14px;
 }
 
@@ -283,13 +279,15 @@ from{
     background-color: #fff;
     padding:25px 15px;
     min-height: 40vh;
+    border-left: 1px solid #b6babb;
+    border-right: 1px solid #b6babb;
 }
 
 .msg-reply-form{
     display: flex;
     flex-direction: row;
-    background-color: #ccc;
     padding:2px 15px;    
+    border: 1px solid #b6babb;
 }
 
 .msg-reply-form .reply-msg-txtarea{
