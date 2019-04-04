@@ -1,5 +1,5 @@
-//APP_URL = 'https://api-epicmail-v2.herokuapp.com/api/v1/'
-APP_URL = 'http://localhost:5000/api/v1/'
+APP_URL = 'https://api-epicmail-v2.herokuapp.com/api/v1/'
+//APP_URL = 'http://localhost:5000/api/v1/'
 const TOKEN = sessionStorage.getItem('token')
 loadLocalHTML = function (uri){
     var htmlCode = '';
