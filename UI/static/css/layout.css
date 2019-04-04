@@ -1,5 +1,5 @@
 body{
-    background-color:#3379f5;
+    background-color:#eef0f1;
 	background-repeat:no-repeat;
 	background-size: cover;
 	background-attachment: fixed;
@@ -15,46 +15,49 @@ body{
 .header{
     width: 100%;
     height:8vh;
-    background: rgba(241, 235, 235, 0.69);
+    background: #3379f5;
     display: flex;
     flex-direction: row;
     width:100%;
     font-family:Roboto;
-    border-bottom-left-radius: 15px;
-    border-bottom-right-radius: 15px;
+    /*border-bottom-left-radius: 15px;
+    border-bottom-right-radius: 15px;*/
 }
 
 .header .logo{
     flex-grow: 1;
     text-align: left;
     font-weight: 900;
+    padding-left: 20px;
 }
 
 .header .logo h3{
     margin-left:15px;
-    color:#222;
+    color:#fff;
 }
 
 .header .nav{
     display: flex;
     justify-content: flex-end;
     flex-grow: 8;
+    padding-right: 16px;
 }
 
 .header .nav .nav-item{
     min-width: 60px;
     margin: 10px;
     text-align: center;
-    color:#222;
+    color:#fff;
     font-size: 1.07em;
     line-height: 2.00em;
 }
 .header .nav .nav-item a.logout{
     text-decoration: none;
-    color: #444;
+    color: #fff;
     padding: 0 10px;
-    border-radius: 15px;
-    font-size: 20px;
+    /*border-radius: 15px;*/
+    font-size: 18px;
+    border: 1px solid #efecec;
 }
 .container{
     width: 100%;   
@@ -62,7 +65,7 @@ body{
     display: flex;
     justify-content: space-around;
     flex-direction: row; 
-    margin-top:15px;
+    /*margin-top:15px;*/
 }
 
 .sidebar{
@@ -72,7 +75,7 @@ body{
     width:20%; 
     height: 100%; 
     background: rgba(241, 235, 235, 0.69);
-    border-radius: 15px;
+    /*border-radius: 15px;*/
 }
 .sidebar .menu-item{
     width:60%;
@@ -87,12 +90,13 @@ body{
 .sidebar .menu-item:hover{
     color:#fff;
     background:rgba(99, 99, 103, 0.5215);
-    border-radius: 15px;
+    /*border-radius: 15px;*/
 }
 .sidebar .menu-item.compose-message-button{
     margin-top:20px;
-    border-radius: 15px;
+    /*border-radius: 15px;*/
     background:#3379f5;
+    color:#fff;
 }
 .sidebar .menu-item.compose-message-button:hover{
     background:rgba(51, 121, 245, 0.71);
@@ -100,12 +104,13 @@ body{
 .mainbar{
     display: flex;
     flex-direction: row; 
-    width:74%;  
-    height:93%;
+    width:78%;  
+    height:100%;
     background: rgba(241, 235, 235, 0.69);
     padding:20px 20px;
     overflow-y: auto;
-    border-radius: 15px;
+    border-left:1px solid gray;
+    /*border-radius: 15px;*/
 }
 .mainbar #main-body{
     display: flex;
@@ -130,14 +135,16 @@ table {
     border-collapse: collapse;
     width: 100%;
     font-size: 0.90em;
+    min-width: 900px;
   }
   tr{
-    background: rgb(51, 121, 245);
+    background: #fff;
     border-bottom: 1px solid #eae2e2;
-    color: #222;
+    color: #555;
   }
   tr:hover{
     background:rgba(51, 121, 245, 0.7);
+    color:#fff;
     cursor: pointer;
   }
   td, th {
@@ -147,6 +154,12 @@ table {
   td.td-action{
     color:#3379f5;
   }
+  td.td-action:hover{
+      color:#f91212;
+  }
+  td.td-action.positive:hover{
+    color:#fff;
+}
   td.msg-body{
     text-overflow: ellipsis;
     white-space: nowrap;
@@ -162,15 +175,19 @@ table {
     font-size: 20px;
   }
 
-  error{
-    color: #fff;
+  error,success{
+    color: #F44336;
     padding: 5px 10px;
-    background: red;
-    border-radius: 15px;
+    background: #efe3e3;
+    /*border-radius: 5px;*/
     text-align: center;
     font-size: 0.9em;
-    width:60%;
-    margin:auto;
+    width: 60%;
+    margin: auto;
+  }
+  success{
+    color: #444;
+    background: #b0ef3b4d;
   }
 
   .msg-container{
@@ -196,8 +213,8 @@ table {
 .back-btn button {
     min-width: 15%;
     margin: 0;
-    border-radius: 0px;
-    border-radius: 10px;
+    /*border-radius: 0px;
+    border-radius: 10px;*/
     padding: 4px 6px;
     border-width: 0px;
     border-style: outset;
@@ -225,7 +242,7 @@ table {
     background: #3379f5;
     line-height: 2.1rem;
     padding: 0 5px;
-    border-radius: 5px;
+    /*border-radius: 5px;*/
   }
 
 .msg-actions .item:hover{
@@ -255,7 +272,7 @@ table {
 from{
     padding: 2px 5px;
     background-color: rgba(245, 149, 51, 0.56);
-    border-radius: 5px;
+    /*border-radius: 5px;*/
     color: #ddd;
     font-size:14px;
 }
@@ -311,21 +328,19 @@ from{
 .form-holder-label{
     flex-grow: 1;
     background-color: #3379f5;
-    height: 5vh;
+    height: 4.6vh;
     text-align: center;
     line-height: 4.9vh;
-    border-top-left-radius: 5px;
-    border-bottom-left-radius: 5px;
-    padding: 2px;
+    padding: 2px 4px;
     font-size: 0.9rem;
-    color:#fff;
+    color: #fff;
 }
 
 .form-holder-item{
     flex-grow: 1;
     padding:3px 10px;
     line-height: 4vh;
-    border-radius: 10px;
+    /*border-radius: 10px;*/
     color: #444;
     font-size: 16px;
 }
@@ -343,7 +358,7 @@ a.form-holder-action{
 }
 button.form-holder-item{
     margin-top:35px;
-    border-radius: 5px;
+    /*border-radius: 5px;*/
     width:80%;
     border-width: 0px;
     border-style: outset;
@@ -378,7 +393,7 @@ button.form-holder-item{
     margin:0px 20px;
     padding:4px 10px;
     background-color: #bbb;
-    border-radius: 5px;
+    /*border-radius: 5px;*/
 }
 
 .groups-container .groups-section .action .item:hover{
@@ -430,7 +445,7 @@ button.form-holder-item{
     flex-direction: row;
     padding: 15px 0px;
     margin-top: 10px;
-    color: #111;
+    color: rgb(189, 181, 181);
 }
 
 .compose-message-container .message-bar .title{
@@ -456,7 +471,7 @@ button.form-holder-item{
     background: #3379f5;
     line-height: 2.1rem;
     padding: 0 5px;
-    border-radius: 5px;
+    /*border-radius: 5px;*/
     width: 100px;
     text-align: center;
   }
@@ -467,11 +482,23 @@ button.form-holder-item{
 
 .compose-message-container .msg-body textarea{
     min-height: 40vh;
-    width:94.8%;
+    width:96.5%;
     padding:10px 20px;
-    border-radius: 15px;
+    /*border-radius: 15px;*/
     align-self: center;
     font-size:16px;
     color:#444;
     font-family: Raleway, Open Sans, Droid Sans, Roboto,arial, sans-serif;
+}
+
+#group-description{
+    width: 100%;
+    font-family: Raleway, Open Sans, Droid Sans, Roboto,arial, sans-serif;
+    padding: 5px 6px;
+    height: 6vh;
+}
+
+#member-user-name,#member-group-name,#group-name{
+    font-size: 13px;
+    padding: 5px 6px;
 }
