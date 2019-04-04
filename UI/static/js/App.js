@@ -389,27 +389,57 @@ sendMessage = function(action){
 }
 
 deleteMessage = function(id){
-    url = `${APP_URL}messages/${id}`;
-    current_page = sessionStorage.getItem('current_page')
-    fetch(url, {
-        method: 'DELETE', 
-        mode:"cors",
-        headers: new Headers({
-          'Authorization': `Bearer ${TOKEN}`
-        }),
-      })
-      .then(response => response.json())
-      .then(data => {
-        
-        if(data.error == undefined){
-            console.log(data.data.message)
-            alert(data.data.message)
-            location.replace("./") 
-        }else{
-            console.log(data.error)
-        }
-      }) 
-      .catch(error => console.error(error)) 
+    if (confirm("Are you sure you want to delete this Message!")) {
+        url = `${APP_URL}messages/${id}`;
+        current_page = sessionStorage.getItem('current_page')
+        fetch(url, {
+            method: 'DELETE', 
+            mode:"cors",
+            headers: new Headers({
+            'Authorization': `Bearer ${TOKEN}`
+            }),
+        })
+        .then(response => response.json())
+        .then(data => {
+            
+            if(data.error == undefined){
+                console.log(data.data.message)
+                alert(data.data.message)
+                location.replace("./") 
+            }else{
+                console.log(data.error)
+            }
+        }) 
+        .catch(error => console.error(error)) 
+    }
+}
+
+deleteGroup = function(id){
+    if (confirm("Are you sure you want to delete this Group!")) {
+        url = `${APP_URL}groups/${id}`;
+        current_page = sessionStorage.getItem('current_page')
+        fetch(url, {
+            method: 'DELETE', 
+            mode:"cors",
+            headers: new Headers({
+              'Authorization': `Bearer ${TOKEN}`
+            }),
+          })
+          .then(response => response.json())
+          .then(data => {
+            
+            if(data.error == undefined){
+                console.log(data.data)
+                alert("Group deleted successfully")
+                setTimeout(function(){
+                    loadLocalHTML('groups.html')
+                }, 2000)
+            }else{
+                console.log(data.error)
+            }
+          }) 
+          .catch(error => console.error(error)) 
+      }
 }
 
 generateUserList = function(){
