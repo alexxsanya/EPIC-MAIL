@@ -1,5 +1,6 @@
-APP_URL = 'https://api-epicmail-v2.herokuapp.com/api/v1/'
-//APP_URL = 'http://localhost:5000/api/v1/'
+//APP_URL = 'https://api-epicmail-v2.herokuapp.com/api/v1/'
+APP_URL = 'http://localhost:5000/api/v1/'
+const TOKEN = sessionStorage.getItem('token')
 loadLocalHTML = function (uri){
     var htmlCode = '';
     var xmlhttp = new XMLHttpRequest();
@@ -18,39 +19,37 @@ loadMessage = function(caption){
 
     document.getElementById('main-body').innerHTML = "Loading...";
 
-    var xmlhttp = new XMLHttpRequest();
-    xmlhttp.onreadystatechange = function(){
-    if(xmlhttp.status == 200 && xmlhttp.readyState == 4){
-        var msgJson = xmlhttp.responseText;
-        msgJson = JSON.parse(msgJson);
-        var data = "<table>";
-        if(isEmpty(msgJson)){
-            data += "<caption> Currently No "+caption+" Messages</caption>";
+    fetch(
+        APP_URL+'messages', 
+        {
+        headers: new Headers({
+          'User-agent': 'Mozilla/4.0 Custom User Agent',
+          'Authorization':`Bearer ${TOKEN}`
+        })
+      })
+      .then(response => response.json())
+      .then(data => { 
+          
+        var ui_data = "<table>";
+        if(isEmpty(data.data)){
+            ui_data += `<caption> Currently No ${caption} Messages</caption>`;
         }else{
-            data += "<caption>"+caption+" Messages</caption>";
-            msgJson.forEach(msg => {
-                data += "<tr onclick='readMessage("+msg.id+")'>"+
-                            "<td>"+msg.subj+"</td>"+
-                            "<td class='msg-body'>"+msg.body+"</td>"+
-                            "<td>"+ msg.date_time+
-                            "</td>"+
-                            "<td class='td-action'></td>"+
-                            "<td class='td-action'></td>"+
-                        "</tr>";           
+            ui_data += `<caption>${caption} Messages</caption>`;
+            data.data.forEach(msg => {
+                ui_data += `<tr onclick='readMessage(${msg.id})'>
+                            <td> ${msg.subject}</td>
+                            <td class='msg-body'> ${msg.msgbody} </td>
+                            <td> ${msg.createdon}</td>
+                            <td class='td-action'>del</td>
+                            <td class='td-action'></td>
+                        </tr>`;           
                 });    
         }
-        data +="</table>";
-        document.getElementById('main-body').innerHTML = data;
-    }else if(xmlhttp.status == 404){
-            console.log(xmlhttp.statusText)
-            document.getElementById('main-body').innerHTML = "<error>Error Occured. Contact Support Team</error>";
-        }
-    };
-
-    uri = "./static/js/"+caption+".json";
-    xmlhttp.open("GET",uri,true);
-    xmlhttp.send();
-
+        ui_data +="</table>";
+        document.getElementById('main-body').innerHTML = ui_data;
+      })
+      .catch(error => console.error(error))
+      
     function isEmpty(arg) {
         for (var item in arg) {
           return false;
@@ -60,7 +59,57 @@ loadMessage = function(caption){
 }
 
 readMessage = function(msg_id){
-    loadLocalHTML('message.html')
+
+    fetch(
+        APP_URL+'messages/'+msg_id, 
+        {
+        headers: new Headers({
+          'User-agent': 'Mozilla/4.0 Custom User Agent',
+          'Authorization':`Bearer ${TOKEN}`
+        })
+      })
+      .then(response => response.json())
+      .then(data => { 
+
+        message = data.data[0]
+        console.log(message)
+        messageCode = `<div class="msg-container">
+            <div class="msg-bar">
+                <div class="back-btn"> 
+                    <button onclick="loadMessage('inbox')">
+                            Back
+                    </div>
+                <div class="msg-actions">
+                    <div class="item">
+                        Reply
+                    </div>
+                    <div class="item" onclick="deleteMessage(${message.id})">
+                        Delete
+                    </div>
+                </div>
+            </div>
+            <div class="msg-display">
+                <div class="msg-title">
+                    <div class="subject"> ${message.subject}</div>
+                    <div class="sender"> <from>from</from> ${message.sender}</div>
+                    <div class="timedate"> ${message.createdon}</div>
+                </div>
+                <div class="msg-body">
+                    ${message.msgbody}
+                </div>
+
+                <div class="msg-reply-form">
+                    <textarea class="reply-msg-txtarea" placeholder="reply" 
+                        id="reply-msg-body" parent_id="${message.id}"></textarea>
+                    <button type="button" id="reply-msg-btn" class="reply-msg-btn">reply</button>
+                </div>
+            </div>
+
+        </div>`
+        document.getElementById('main-body').innerHTML = messageCode;
+      })
+      .catch(error => console.error(error))
+
 }
 resetPassword = function(){
     var reset_btn = document.getElementById('reset-pass')
@@ -153,6 +202,49 @@ createUser = function(e){
           }) 
           .catch(error => console.error(error))
     }
+}
+
+sendMessage = function(){
+
+    msg_receiver = document.getElementById('msg-receiver').value
+    msg_body = document.getElementById('msg-body').value
+    msg_subject = document.getElementById('msg-subject').value
+    send_message = document.getElementById('send_message')
+    send_message.innerText = 'sending..'
+
+    if(msg_receiver.length>10 && msg_body.length>4){
+        message = {
+            "subject": msg_subject,
+            "receiver": msg_receiver,
+            "msgBody": msg_body
+        }
+        url = APP_URL+"messages"
+        fetch(url, {
+            method: 'POST', 
+            mode:"cors",
+            body: JSON.stringify(message), 
+            headers: new Headers({
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${TOKEN}`
+            }),
+          })
+          .then(response => response.json())
+          .then(data => {
+            
+            if(data.error == undefined){
+                console.log(data.data.message)
+                alert(data.data.message)
+            }else{
+                alert(data.error)
+            }
+            send_message.innerText = 'Send'
+          }) 
+          .catch(error => console.error(error))
+
+    }else{
+        alert('check, You have missing fields or with invalid data')
+    }
+    
 }
 
 App = function(){
