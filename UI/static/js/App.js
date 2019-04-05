@@ -1,5 +1,5 @@
-//APP_URL = 'https://api-epicmail-v2.herokuapp.com/api/v1/'
-APP_URL = 'http://localhost:5000/api/v1/'
+APP_URL = 'https://api-epicmail-v2.herokuapp.com/api/v1/'
+//APP_URL = 'http://localhost:5000/api/v1/'
 const TOKEN = sessionStorage.getItem('token')
 loadLocalHTML = function (uri){
     var htmlCode = '';
@@ -18,18 +18,32 @@ loadLocalHTML = function (uri){
 loadMessage = function(caption){
 
     document.getElementById('main-body').innerHTML = "Loading...";
-
+    var url = APP_URL+'messages/'+caption
+    sessionStorage.setItem('current_page',caption)
+    url = {
+        'inbox':'messages',
+        'sent':'messages/sent',
+        'draft':'messages/draft',
+        'unread':'messages/unread'
+    }
     fetch(
-        APP_URL+'messages', 
+        APP_URL+url[caption], 
         {
-        headers: new Headers({
-          'User-agent': 'Mozilla/4.0 Custom User Agent',
-          'Authorization':`Bearer ${TOKEN}`
-        })
+            method: 'GET', 
+            mode:"cors",
+            headers: new Headers({
+            'User-agent': 'Mozilla/4.0 Custom User Agent',
+            'Authorization':`Bearer ${TOKEN}`
+            })
       })
       .then(response => response.json())
       .then(data => { 
-          
+        if(data.msg == "Token has expired" ){
+            alert("session expired")
+            sessionStorage.removeItem('username')
+            sessionStorage.removeItem('token')
+            location.reload()
+        }
         var ui_data = "<table>";
         if(isEmpty(data.data)){
             ui_data += `<caption> Currently No ${caption} Messages</caption>`;
@@ -48,7 +62,11 @@ loadMessage = function(caption){
         ui_data +="</table>";
         document.getElementById('main-body').innerHTML = ui_data;
       })
-      .catch(error => console.error(error))
+      .catch( error => {
+        document.getElementById('main-body').innerHTML = `
+            <error>Kindly contact epicmail support team</error>
+            `;
+        })
       
     function isEmpty(arg) {
         for (var item in arg) {
@@ -59,7 +77,7 @@ loadMessage = function(caption){
 }
 
 readMessage = function(msg_id){
-
+    current_page = sessionStorage.getItem('current_page')
     fetch(
         APP_URL+'messages/'+msg_id, 
         {
@@ -70,13 +88,13 @@ readMessage = function(msg_id){
       })
       .then(response => response.json())
       .then(data => { 
-
+        console.log(data)
         message = data.data[0]
-        console.log(message)
+        
         messageCode = `<div class="msg-container">
             <div class="msg-bar">
                 <div class="back-btn"> 
-                    <button onclick="loadMessage('inbox')">
+                    <button onclick="loadMessage('${current_page}')">
                             Back
                     </div>
                 <div class="msg-actions">
@@ -245,6 +263,30 @@ sendMessage = function(){
         alert('check, You have missing fields or with invalid data')
     }
     
+}
+
+deleteMessage = function(id){
+    url = `${APP_URL}messages/${id}`;
+    current_page = sessionStorage.getItem('current_page')
+    fetch(url, {
+        method: 'DELETE', 
+        mode:"cors",
+        headers: new Headers({
+          'Authorization': `Bearer ${TOKEN}`
+        }),
+      })
+      .then(response => response.json())
+      .then(data => {
+        
+        if(data.error == undefined){
+            console.log(data.data.message)
+            alert(data.data.message)
+            location.replace("./") 
+        }else{
+            console.log(data.error)
+        }
+      }) 
+      .catch(error => console.error(error)) 
 }
 
 App = function(){
