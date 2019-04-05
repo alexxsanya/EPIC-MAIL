@@ -318,7 +318,7 @@ createUser = function(e){
         let userData = {}
     
         formData.set("email", formData.get('email')+'@epicmail.com');
-        formData.set('recovery_email','alex@epicmail.com')
+        formData.set('recovery_email',`${formData.get('firstname')}.r@epicmail.com`)
 
         formData.forEach((value, key) => {userData[key] = value});
     
