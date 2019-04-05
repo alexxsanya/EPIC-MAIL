@@ -177,7 +177,7 @@ resetPassword = function(){
     var reset_btn = document.getElementById('reset-pass')
     var reset_value = document.getElementById('recover-to')
 
-    reset_btn.setAttribute("disabled","disabled")
+    reset_btn.disabled = true
 
     reset_btn.addEventListener('click',function(){
         console.log(reset_value.value)
@@ -191,7 +191,7 @@ resetPassword = function(){
     reset_value.addEventListener('keyup',function(){
         if(reset_value.value.length>12){
             console.log("You can now request for a request")
-            reset_btn.removeAttribute("disabled")
+            reset_btn.disabled = false
         }
     })
 }
@@ -296,7 +296,9 @@ addMembertoGroup = function(){
 
 createUser = function(e){
     let signup_btn = document.getElementById('create-user-btn')
+    let status_label = document.getElementById('signup-status')
     signup_btn.innerText = "Loading..."
+    
     e.preventDefault() 
     console.log(signup_is_valid)
     if(false in signup_is_valid){
@@ -312,7 +314,7 @@ createUser = function(e){
         signup_btn.innerText = "CREATE Account"
 
     }else{
-
+        signup_btn.disabled = true
         let signupForm = document.getElementById('signup-form')
         let formData = new FormData(signupForm)
         let userData = {}
@@ -335,12 +337,15 @@ createUser = function(e){
           .then(data => {
             
             if(data.error == undefined){
-                console.log(data['data'][0].user)                    
+                console.log(data['data'][0].user)              
+                status_label.innerHTML = '<success>Account Created</success>'      
                 sessionStorage.setItem('token',data['data'][0].token)
                 sessionStorage.setItem('username',data['data'][0].user.firstname)
                 location.replace("./")
             }else{
                 console.log(data.error)
+                status_label.innerHTML = `<error>${data.error}</error>`
+                signup_btn.disabled = false
             }
             signup_btn.innerText = "CREATE Account"
           }) 
@@ -354,14 +359,21 @@ sendMessage = function(action){
     msg_body = document.getElementById('msg-body').value
     msg_subject = document.getElementById('msg-subject').value
     send_message = document.getElementById('send_message')
-    send_message.innerText = 'sending..'
-
+    save_message = document.getElementById('save_message')
+    status_label = document.getElementById('message-status')
+    if(action =='save'){
+        save_message.innerText = 'saving...'
+    }else if(action == 'Send'){
+        send_message.innerText = 'sending...'
+    }
+    send_message.disabled = true
+    save_message.disabled = true
     option = {
         'save':APP_URL+"messages/draft",
         'send':APP_URL+"messages"
     }
 
-    if(msg_receiver.length>10 && msg_body.length>1){
+    if(msg_receiver.length>6 && msg_body.length>1){
         message = {
             "subject": msg_subject,
             "receiver": msg_receiver,
@@ -382,17 +394,36 @@ sendMessage = function(action){
             
             if(data.error == undefined){
                 console.log(data.data.message)
-                alert(data.data.message)
+                status_label.innerHTML = `<success>${data.data.message}</sucess>`
                 loadMessage('inbox')
             }else{
                 console.log(data.error)
+                send_message.disabled = false
+                save_message.disabled = false
+                status_label.innerHTML = `<error>sj ${data.error}</error>`
+                if(action==='save'){
+                    save_message.innerText = 'Save As Draft'
+                }else if(action === 'send'){
+                    send_message.innerText = 'send'
+                }
             }
-            send_message.innerText = 'Send'
           }) 
           .catch(error => console.error(error))
 
     }else{
-        alert('check, You have missing fields or with invalid data')
+        if(msg_body.length <1){
+            status_label.innerHTML = "<error> Message body not written</error>"
+        }
+        if(msg_receiver.length <6){
+            status_label.innerHTML = "<error>Invalid Email Address</error>"
+        }
+        send_message.disabled = false
+        save_message.disabled = false
+        if(action==='save'){
+            save_message.innerText = 'Save As Draft'
+        }else if(action === 'send'){
+            send_message.innerText = 'send'
+        }
     }
     
 }
@@ -681,10 +712,11 @@ LoginApp = function(){
     login_btn.onclick = function() { 
         username = document.getElementById('user-name').value
         pass = document.getElementById('user-pass').value
+        status_label = document.getElementById('login-status')
         login_btn.innerText = "Loading..."
-        
+
         if(pass.length>6 && username.length>3){
-            
+            login_btn.disabled = true
             user = {
                 'email':`${username}@epicmail.com`,
                 'password':pass
@@ -707,7 +739,9 @@ LoginApp = function(){
                     sessionStorage.setItem('username',data['data'][0].user.firstname)
                     location.replace("./") 
                 }else{
-                    console.log(data.error)  
+                    console.log(data.error) 
+                    status_label.innerHTML=`<error>${data.error}</error>` 
+                    login_btn.disabled = false
                 }  
                 login_btn.innerText = "Login"  
               }) 
