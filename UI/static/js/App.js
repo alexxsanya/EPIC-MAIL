@@ -22,7 +22,6 @@ loadLocalHTML = function (uri){
               })
               .then(response => response.json())
               .then(data => { 
-                console.log(data.data[0])
                 groupList = data.data
 
                 groupHTML = `
@@ -139,9 +138,6 @@ readMessage = function(msg_id){
                             Back
                     </div>
                 <div class="msg-actions">
-                    <div class="item">
-                        Reply
-                    </div>
                     <div class="item" onclick="deleteMessage(${message.id})">
                         Delete
                     </div>
@@ -239,15 +235,56 @@ addGroup = function(){
 }
 
 addMembertoGroup = function(){ 
-    var add_group = document.getElementById('create-group-container')
-    var add_member =  document.getElementById('add-member-container')  
-    add_member.setAttribute('style','display:flex');
-    add_group.setAttribute('style','display:none')
-}
+    var add_group_div = document.getElementById('create-group-container')
+    var add_member_div =  document.getElementById('add-member-container') 
+    var add_member_btn =  document.getElementById('add-member') 
+    add_member_div.setAttribute('style','display:flex')
+    add_group_div.setAttribute('style','display:none')
+         
+    generateGroupList()
 
-addContact = function(){
-    var add_member =  document.getElementById('create-contact-container')  
-    add_member.setAttribute('style','display:flex'); 
+    generateUserList()
+
+    add_member_btn.onclick = function(){
+        let group_id =  document.getElementById('member-group-name').value
+        let user_name =  document.getElementById('member-user-name').value
+        let user_role =  document.getElementById('member-user-role').value
+        let status_label  = document.getElementById('mgroup-status')
+
+        user_id = user_name.split("-")[0]
+        
+        alert(`${group_id} ${user_name} ${user_role}`)
+
+        group_user = {
+            "user_id":user_id,
+            "user_role":user_role
+        }
+        url = `${APP_URL}groups/${group_id}/users`
+        fetch(url, {
+            method: 'POST', 
+            mode:"cors",
+            body: JSON.stringify(group_user), 
+            headers: new Headers({
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${TOKEN}`
+            }),
+          })
+          .then(response => response.json())
+          .then(data => {
+            
+            if(data.error == undefined){
+                console.log(data.data)
+                status_label.innerHTML = '<success>Member successfully added<success>'
+                setTimeout(function(){
+                    loadLocalHTML('groups.html')
+                }, 5000)
+            }else{
+                status_label.innerHTML = `<error>${data.error}</error>`
+                console.log(data.error)
+            }
+          }) 
+          .catch(error => console.error(error))
+    }
 }
 
 createUser = function(e){
@@ -373,6 +410,67 @@ deleteMessage = function(id){
         }
       }) 
       .catch(error => console.error(error)) 
+}
+
+generateUserList = function(){
+
+    let users_list = document.getElementById('user-list')
+
+    fetch(`${APP_URL}auth/users`, {
+        method: 'GET', 
+        mode:"cors",
+        headers: new Headers({
+          'Authorization': `Bearer ${TOKEN}`
+        }),
+      })
+      .then(response => response.json())
+      .then(data => {
+
+        USERS_LIST = data.data
+        
+        if(data.error == undefined){
+            USERS_LIST.forEach(user => {
+                var option = document.createElement('option');
+                // option.value = `${user.email}`
+                option.innerHTML = `${user.id} - ${user.firstname.toLowerCase()} 
+                    ${user.lastname.toLowerCase()} `;
+
+                users_list.appendChild(option);
+
+            })
+        }else{
+            console.log(data.error)
+        }
+      }) 
+      .catch(error => console.error(error))  
+}
+
+generateGroupList = function(){
+    let group_select = document.getElementById('member-group-name')
+    fetch(`${APP_URL}groups`, {
+        method: 'GET', 
+        mode:"cors",
+        headers: new Headers({
+          'Authorization': `Bearer ${TOKEN}`
+        }),
+      })
+      .then(response => response.json())
+      .then(data => {
+
+        GROUPS_LIST = data.data
+
+        if(data.error == undefined){
+            GROUPS_LIST.forEach(group => {
+                group_select.options[group_select.options.length] = new Option(
+                    group.name.toLowerCase(), 
+                    group.id
+                );
+            })
+        }else{
+            console.log(data.error)
+        }
+      }) 
+      .catch(error => console.error(error))
 }
 
 App = function(){

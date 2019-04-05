@@ -27,7 +27,7 @@
          </div>
       </div>
       <div id="add-member-container">
-
+          <status id="mgroup-status"></status>
           <div class="form-holder">
               <select class="form-holder-item" id="member-group-name" >
                   <option>Group Name</option>
@@ -35,10 +35,17 @@
           </div>
           <div class="form-holder">
               <input type="text" class="form-holder-item" id="member-user-name" 
-                  placeholder="Member Name" minlength="4" maxlength="15" required/>
+                  placeholder="Member Name" minlength="4" maxlength="15" list="user-list" required/>
+              <datalist id="user-list">
+              </datalist>
+          </div>
+          <div class="form-holder">
+              <input type="text" class="form-holder-item" id="member-user-role" 
+                  placeholder="Member Role" minlength="4" maxlength="15" required/>
           </div>
           <div class="form-holder ">
-              <button type="button" class="form-holder-item">Add</input>
+              <button type="button" 
+                class="form-holder-item" id="add-member">Add</input>
          </div>
       </div>
     </div>
