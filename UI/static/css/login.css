@@ -57,7 +57,14 @@ body{
     font-size: 0.9rem;
     color:#fff;
 }
-
+.form-holder-label.email{
+    border-top-left-radius: 0px;
+    border-bottom-left-radius: 0px;
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px;
+    padding: 2px 10px;
+    font-size: 16px;
+}
 .form-holder-item{
     flex-grow: 8;
     padding:3px 4px;
@@ -177,4 +184,8 @@ button.form-holder-item{
 #recover-to{
     text-transform: lowercase;
     font-size: 16px;
+}
+
+#pass-status{
+    display: none
 }

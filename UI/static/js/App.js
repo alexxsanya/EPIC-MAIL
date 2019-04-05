@@ -1,3 +1,4 @@
+APP_URL = 'https://api-epicmail-v2.herokuapp.com/api/v1/'
 loadLocalHTML = function (uri){
     var htmlCode = '';
     var xmlhttp = new XMLHttpRequest();
@@ -101,9 +102,59 @@ addContact = function(){
     var add_member =  document.getElementById('create-contact-container')  
     add_member.setAttribute('style','display:flex'); 
 }
+
+createUser = function(e){
+    let signup_btn = document.getElementById('create-user-btn')
+    signup_btn.innerText = "Loading..."
+    e.preventDefault() 
+    console.log(signup_is_valid)
+    if(false in signup_is_valid){
+
+        invalid_fields = []
+
+        signup_is_valid.forEach((value,key)=>function(){
+            if(value==false){
+                invalid_fields.push(key)
+            }
+            console.log(invalid_fields)
+        })
+        signup_btn.innerText = "CREATE Account"
+
+    }else{
+
+        let signupForm = document.getElementById('signup-form')
+        let formData = new FormData(signupForm)
+        let userData = {}
+    
+        formData.set("email", formData.get('email')+'@epicmail.com');
+    
+        formData.forEach((value, key) => {userData[key] = value});
+    
+        url = APP_URL+"auth/signup"
+        fetch(url, {
+            method: 'POST', 
+            mode:"cors",
+            body: JSON.stringify(userData), 
+            headers: new Headers({
+              'Content-Type': 'application/json'
+            }),
+          })
+          .then(response => response.json())
+          .then(data => {
+            
+            if(data.error == undefined){
+                console.log(data)
+            }else{
+                alert(data.error)
+            }
+            signup_btn.innerText = "CREATE Account"
+          }) 
+          .catch(error => console.error(error))
+    }
+}
+
 App = function(){
     console.log('EPIC-MAIL system loaded')
-    setCurrentTime();
 }
 
 LoginApp = function(){
