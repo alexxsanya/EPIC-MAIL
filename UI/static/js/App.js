@@ -155,8 +155,47 @@ resetPassword = function(){
 addGroup = function(){ 
     var add_group = document.getElementById('create-group-container')
     var add_member =  document.getElementById('add-member-container')
+    var create_group_btn = document.getElementById('create-group')
     add_group.setAttribute('style','display:flex');
     add_member.setAttribute('style','display:none')
+
+    create_group_btn.addEventListener('click', function(){
+        
+        let name = document.getElementById('group-name').value
+        let role = document.getElementById('group-description').value
+        let status_label = document.getElementById('resp-status')
+        status_label.innerHTML = 'processing...'
+        group = {
+            "name":name,
+            "role":role
+        }
+        url = APP_URL+"groups"
+        fetch(url, {
+            method: 'POST', 
+            mode:"cors",
+            body: JSON.stringify(group), 
+            headers: new Headers({
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${TOKEN}`
+            }),
+          })
+          .then(response => response.json())
+          .then(data => {
+            
+            if(data.error == undefined){
+                console.log(data.data)
+                status_label.innerHTML = '<success>Group successfully created<success>'
+                name.value('')
+                role.value('')
+                setTimeout(function(){
+                    status_label.setAttribute('hidden','hidden')
+                }, 3000)
+            }else{
+                alert(data.error)
+            }
+          }) 
+          .catch(error => console.error(error))
+    });
 }
 
 addMembertoGroup = function(){ 
