@@ -1,4 +1,5 @@
 APP_URL = 'https://api-epicmail-v2.herokuapp.com/api/v1/'
+//APP_URL = 'http://localhost:5000/api/v1/'
 loadLocalHTML = function (uri){
     var htmlCode = '';
     var xmlhttp = new XMLHttpRequest();
@@ -143,7 +144,8 @@ createUser = function(e){
           .then(data => {
             
             if(data.error == undefined){
-                console.log(data)
+                console.log(data['data'][0].user)
+                sessionStorage.setItem('token',data['data'][0].token)
             }else{
                 alert(data.error)
             }
@@ -155,8 +157,58 @@ createUser = function(e){
 
 App = function(){
     console.log('EPIC-MAIL system loaded')
+    token = sessionStorage.getItem('token')
+    if(token === null || token.length<150){
+        location.replace('./login.html')
+    }
 }
 
 LoginApp = function(){
     resetPassword()
+    login_btn = document.getElementById('login-btn')
+    login_btn.preventDefault
+
+    login_btn.onclick = function() { 
+        username = document.getElementById('user-name').value
+        pass = document.getElementById('user-pass').value
+        login_btn.innerText = "Loading..."
+        
+        if(pass.length>6 && username.length>3){
+            
+            user = {
+                'email':`${username}@epicmail.com`,
+                'password':pass
+            };
+            url = APP_URL+"auth/login"
+            fetch(url, {
+                method: 'POST', 
+                mode:"cors",
+                body: JSON.stringify(user), 
+                headers: new Headers({
+                  'Content-Type': 'application/json'
+                }),
+              })
+              .then(response => response.json())
+              .then(data => {
+                  
+                if(data.error == undefined){
+                    console.log(data['data'][0].user)
+                    sessionStorage.setItem('token',data['data'][0].token)
+                    sessionStorage.setItem('username',data['data'][0].user.firstname)
+                    location.replace("./") 
+                }else{
+                    alert(data.error)  
+                }  
+                login_btn.innerText = "Login"  
+              }) 
+              .catch(error => {
+                console.log(error)
+                login_btn.innerText = "Login"  
+              }) 
+            
+                    
+        }
+
+
+    }
 }
