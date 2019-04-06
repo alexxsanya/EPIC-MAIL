@@ -111,8 +111,7 @@ button.form-holder-item{
 .step-down a{
     margin: 10px 0;
 }
-.step-down a.no__account,
-.step-down a.login{
+.step-down a.no__account{
     margin: 10px;
     margin-top: 20px;
     color: #444;
@@ -122,6 +121,17 @@ button.form-holder-item{
     margin: 10px;
     margin-top: 20px;
     color: #666;
+}
+.step-down a.login{
+    margin-top: 20px;
+    color: #444;
+    padding: 8px 5px;
+    width: 100px;
+    align-self: flex-start;
+    text-align: left;
+}
+.step-down a.login:hover{
+    border:1px solid #3379f5;
 }
 .modal {
     display: none;
