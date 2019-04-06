@@ -470,14 +470,17 @@ button.form-holder-item{
     line-height: 2.1rem;
     padding: 0 5px;
     /*border-radius: 5px;*/
-    width: 100px;
+    min-width: 100px;
     text-align: center;
   }
 
 .compose-message-container .message-bar .actions .item:hover{
     color: #fff;
 }
-
+.compose-message-container .message-bar .actions .item button{
+    padding: 0;
+    font-size: 0.8rem;
+  }
 .compose-message-container .msg-body textarea{
     min-height: 40vh;
     width:96.5%;

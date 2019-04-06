@@ -297,8 +297,6 @@ addMembertoGroup = function(){
 createUser = function(e){
     let signup_btn = document.getElementById('create-user-btn')
     let status_label = document.getElementById('signup-status')
-    signup_btn.innerText = "Loading..."
-    
     e.preventDefault() 
     console.log(signup_is_valid)
     if(false in signup_is_valid){
@@ -315,6 +313,8 @@ createUser = function(e){
 
     }else{
         signup_btn.disabled = true
+        signup_btn.innerText = "Loading..."
+        signup_btn.style.background = "#808080"
         let signupForm = document.getElementById('signup-form')
         let formData = new FormData(signupForm)
         let userData = {}
@@ -346,8 +346,9 @@ createUser = function(e){
                 console.log(data.error)
                 status_label.innerHTML = `<error>${data.error}</error>`
                 signup_btn.disabled = false
+                signup_btn.innerText = "CREATE Account"
+                signup_btn.style.background = "#3379f5"
             }
-            signup_btn.innerText = "CREATE Account"
           }) 
           .catch(error => console.error(error))
     }
@@ -363,11 +364,14 @@ sendMessage = function(action){
     status_label = document.getElementById('message-status')
     if(action =='save'){
         save_message.innerText = 'saving...'
-    }else if(action == 'Send'){
+    }else if(action == 'send'){
         send_message.innerText = 'sending...'
     }
+    save_message.style.background = '#808080' 
+    send_message.style.background = '#808080'
     send_message.disabled = true
     save_message.disabled = true
+    
     option = {
         'save':APP_URL+"messages/draft",
         'send':APP_URL+"messages"
@@ -395,16 +399,20 @@ sendMessage = function(action){
             if(data.error == undefined){
                 console.log(data.data.message)
                 status_label.innerHTML = `<success>${data.data.message}</sucess>`
-                loadMessage('inbox')
+                setTimeout(function(){
+                    loadMessage('inbox')
+                },5000)
             }else{
                 console.log(data.error)
                 send_message.disabled = false
                 save_message.disabled = false
-                status_label.innerHTML = `<error>sj ${data.error}</error>`
+                save_message.style.background = '#3379f5' 
+                send_message.style.background = '#3379f5'
+                status_label.innerHTML = `<error>${data.error}</error>`
                 if(action==='save'){
                     save_message.innerText = 'Save As Draft'
                 }else if(action === 'send'){
-                    send_message.innerText = 'send'
+                    send_message.innerText = 'Send'
                 }
             }
           }) 
@@ -417,15 +425,19 @@ sendMessage = function(action){
         if(msg_receiver.length <6){
             status_label.innerHTML = "<error>Invalid Email Address</error>"
         }
-        send_message.disabled = false
-        save_message.disabled = false
         if(action==='save'){
             save_message.innerText = 'Save As Draft'
         }else if(action === 'send'){
-            send_message.innerText = 'send'
+            send_message.innerText = 'Send'
         }
+        send_message.disabled = false
+        save_message.disabled = false
+        save_message.style.background = '#3379f5' 
+        send_message.style.background = '#3379f5'
     }
-    
+    setTimeout(function(){
+        status_label.innerHTML = "";
+    },5000)
 }
 
 deleteMessage = function(id){
@@ -712,11 +724,13 @@ LoginApp = function(){
     login_btn.onclick = function() { 
         username = document.getElementById('user-name').value
         pass = document.getElementById('user-pass').value
+
         status_label = document.getElementById('login-status')
-        login_btn.innerText = "Loading..."
 
         if(pass.length>6 && username.length>3){
             login_btn.disabled = true
+            login_btn.innerText = "Loading..."
+            login_btn.style.background = "#808080"
             user = {
                 'email':`${username}@epicmail.com`,
                 'password':pass
@@ -742,6 +756,8 @@ LoginApp = function(){
                     console.log(data.error) 
                     status_label.innerHTML=`<error>${data.error}</error>` 
                     login_btn.disabled = false
+                    login_btn.innerText = "Login"
+                    login_btn.style.background = "#3379f5"
                 }  
                 login_btn.innerText = "Login"  
               }) 
@@ -751,6 +767,16 @@ LoginApp = function(){
               }) 
             
                     
+        }else{
+            if(pass.length<6){
+                status_label.innerHTML = "<error>Invalid Password</error>"
+            }
+            if(username.length<3){
+                status_label.innerHTML = "<error>Invalid Username</error>"
+            }
+            setTimeout(function(){
+                status_label.innerHTML = ""
+            },3000)
         }
 
 
