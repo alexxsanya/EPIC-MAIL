@@ -72,10 +72,12 @@ pass2.onkeyup =function(){
     if(pass.value == pass2.value){   
         pass2.setAttribute('style',"border:2px solid green")
         signup_is_valid['pass'] = true
+        show_signup_btn.removeAttribute('style')
         createUserbtn = document.getElementById('create-user-btn')
         createUserbtn.removeAttribute('disabled')
     }else{
         pass2.setAttribute('style',"border:2px solid red")
+        show_signup_btn.setAttribute('style','display:none')
         signup_is_valid['pass'] = true
     }
 }
