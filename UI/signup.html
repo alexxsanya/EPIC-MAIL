@@ -81,12 +81,12 @@
                                         placeholder="Confirm Password"  required
                                         pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,25}"/>
                             </div>                        
-                    <div class="form-holder ">
+                    <div class="form-holder " id="show_signup_btn" style='display:none'>
                          <button type="submit" class="form-holder-item" disabled
                             onclick="createUser(event)" id="create-user-btn">CREATE Account</input>
                     </div>
                     <div class="form-holder step-down">
-                        <a href="./login.html" class="form-holder-action login">Login</a>
+                        <a href="./login.html" class="form-holder-action login"><i class="fas fa-caret-left"></i> Login</a>
                     </div>
                 </form>
             </div>
